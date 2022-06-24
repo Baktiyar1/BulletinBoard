@@ -5,6 +5,7 @@
     android:id="@+id/category_frame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="8dp"
     tools:context=".presentation.item_add.ui.activity.ItemAddActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -30,9 +31,9 @@
                 android:clickable="true"
                 android:focusable="true"
                 app:srcCompat="@drawable/ic_baseline_close_24"
+                tools:ignore="ContentDescription"
                 tools:layout_editor_absoluteX="424dp"
-                tools:layout_editor_absoluteY="13dp"
-                tools:ignore="ContentDescription" />
+                tools:layout_editor_absoluteY="13dp" />
 
             <TextView
                 android:id="@+id/textView7"
@@ -113,6 +114,7 @@
                 android:layout_height="wrap_content"
                 android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/subcategory_spinner">
 
@@ -163,6 +165,7 @@
                     android:id="@+id/carTypeModelEditText"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
                     android:layout_marginEnd="3dp"
                     android:hint="@string/transport_model"
                     android:importantForAutofill="no"
@@ -179,13 +182,12 @@
                     android:id="@+id/yearSpinner"
                     android:layout_width="0dp"
                     android:layout_height="60dp"
-                    android:layout_marginTop="16dp"
                     android:background="@drawable/spinner_background"
                     android:textColor="#808080"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/carTypeModelSpinner" />
+                    app:layout_constraintTop_toTopOf="@+id/guideline3" />
 
                 <Spinner
                     android:id="@+id/bodyTypeSpinner"
@@ -289,6 +291,13 @@
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="@+id/transportGuideline"
                     app:layout_constraintTop_toBottomOf="@+id/steeringWheelSpinner" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_percent="0.32282004" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -458,13 +467,13 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <RelativeLayout
-                    android:id="@+id/relative_dogovornaya"
+                    android:id="@+id/relative_negotiable"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center">
 
                     <TextView
-                        android:id="@+id/dogovornaya"
+                        android:id="@+id/negotiable"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
@@ -474,12 +483,13 @@
                         android:textStyle="bold" />
 
                     <androidx.appcompat.widget.SwitchCompat
-                        android:id="@+id/dogovornaya_switch"
+                        android:id="@+id/negotiable_switch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
                         android:layout_marginStart="@dimen/dp_10"
-                        android:layout_toEndOf="@id/dogovornaya"
+                        android:layout_toEndOf="@id/negotiable"
+                        android:checked="false"
                         android:theme="@style/ProgressBar" />
 
                 </RelativeLayout>
@@ -491,7 +501,6 @@
                 android:layout_height="60dp"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/spinner_background"
-                android:backgroundTint="#00FFFFFF"
                 android:textColor="#808080"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -508,39 +517,47 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/region_spinner" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/phoneNumberInputLayout"
+            <TextView
+                android:id="@+id/phoneNumberTextView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/spinner_background"
+                android:visibility="gone"
                 app:hintTextColor="#808080"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/city_spinner">
+                app:layout_constraintTop_toBottomOf="@+id/city_spinner" />
 
-                <com.santalu.maskedittext.MaskEditText
-                    android:id="@+id/phone_number"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:padding="10dp"
-                    android:textColorHint="#000000"
-                    app:met_mask="+996 (###) ## ## ##" />
-
-            </com.google.android.material.textfield.TextInputLayout>
+            <EditText
+                android:id="@+id/phoneNumberEditText"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:inputType="number"
+                android:padding="8dp"
+                android:textColorHint="#000000"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/city_spinner"
+                app:met_mask="+996 (###) ## ## ##"
+                tools:ignore="Autofill,TextFields" />
 
             <TextView
                 android:id="@+id/my_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="76dp"
                 android:text="@string/use_my_number"
                 android:textAlignment="center"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toStartOf="@+id/my_number_switch"
-                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_chainStyle="spread"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/phoneNumberInputLayout" />
+                app:layout_constraintTop_toBottomOf="@+id/city_spinner" />
 
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/my_number_switch"

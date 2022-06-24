@@ -51,6 +51,7 @@
     <string name="add">Add</string>
     <string name="category">Category</string>
     <string name="category_description">Category description</string>
+    <string name="list_all_category">List all category</string>
 
     <string-array name="categories">
         <item>TRANSPORT</item>
@@ -2178,5 +2179,89 @@
         <item>11.8</item>
         <item>11.9</item>
         <item>12.0</item>
+    </string-array>
+    
+    <string-array name="volute">
+        <item>KGS</item>
+        <item>USD</item>
+    </string-array>
+
+    <string-array name="region">
+        <item>Chui</item>
+        <item>Issyk-Kul</item>
+        <item>Talas</item>
+        <item>Naryn</item>
+        <item>Jalal-Abab</item>
+        <item>Osh</item>
+        <item>Batken</item>
+    </string-array>
+    
+    <string-array name="cities_and_villages_chui">
+        <item>Bishkek</item>
+        <item>Belovodskoe</item>
+        <item>Kaiyngdy</item>
+        <item>Kant</item>
+        <item>Kara_Balta</item>
+        <item>Kemin</item>
+        <item>Lebedinovka</item>
+        <item>Orlovka</item>
+        <item>Sokylyc</item>
+        <item>Tokmok</item>
+        <item>Shopokov</item>
+    </string-array>
+
+    <string-array name="cities_and_villages_issyk_kul">
+        <item>Karakol</item>
+        <item>Balykchy</item>
+        <item>Cholpon_Ata</item>
+    </string-array>
+
+    <string-array name="cities_and_villages_talas">
+        <item>Talas</item>
+        <item>Bakai_Ata</item>
+        <item>Kyzyl_Adyr</item>
+        <item>Pokrivka</item>
+    </string-array>
+
+    <string-array name="cities_and_villages_naryn">
+        <item>Naryn</item>
+        <item>At_Bashy</item>
+        <item>Boetov</item>
+        <item>Kochkor</item>
+        <item>Chaek</item>
+    </string-array>
+
+    <string-array name="cities_and_villages_jalal_abab">
+        <item>Jalal-Abad</item>
+        <item>Ala-Buka</item>
+        <item>Bazar-Korgon</item>
+        <item>Kazarman</item>
+        <item>Kanysj-Kyia</item>
+        <item>Kara-Kol</item>
+        <item>Kerben</item>
+        <item>Kok-Jangak</item>
+        <item>Kochkor-Ata</item>
+        <item>Kyzyl-Jar</item>
+        <item>Mailuu-Suu</item>
+        <item>Massy</item>
+        <item>Suzak</item>
+        <item>Tash-Komur</item>
+        <item>Toktogul</item>
+        <item>Shamaldy-Sai</item>
+    </string-array>
+
+    <string-array name="cities_and_villages_osh">
+        <item>Osh</item>
+        <item>Ozgon</item>
+        <item>Kara-Suu</item>
+    </string-array>
+
+    <string-array name="cities_and_villages_batken">
+        <item>Batken</item>
+        <item>Aidarken</item>
+        <item>Isfana</item>
+        <item>Kadamjai</item>
+        <item>Kyzyl-Kyia</item>
+        <item>Suluctu</item>
     </string-array>
 </resources>

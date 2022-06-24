@@ -1,5 +1,6 @@
 package com.baktiyar11.bulletinboard.presentation.main.ui
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -28,7 +29,7 @@ class AnnouncementListsActivity : AppCompatActivity() {
         ActivityAnnouncementListsBinding.inflate(layoutInflater)
     }
     private var daoCategory: CategoryDao? = null
-    private var categoryList: ArrayList<Category>? = GetListClass().addAllCategory()
+    private var categoryList: ArrayList<Category> = GetListClass().addAllCategory()
     private val categoryAdapter: CategoryAdapter by lazy {
         CategoryAdapter(object : ItemClickListenerCategory {
             override fun showDetailsCategory(category: Category) {
@@ -54,18 +55,17 @@ class AnnouncementListsActivity : AppCompatActivity() {
             imageSliderMain.setImageList(slideModelList, ScaleTypes.CENTER_INSIDE)
 
             floatingActionButtonMain.setOnClickListener {
-                transitionToItemAddActivity()
+                transitionToItemAddActivity(ItemAddActivity())
             }
 
             constraintLayoutAllCategory.setOnClickListener {
-                startActivity(Intent(this@AnnouncementListsActivity,
-                    AllCategoryActivity::class.java))
+                transitionToItemAddActivity(AllCategoryActivity())
             }
         }
     }
 
-    private fun transitionToItemAddActivity() {
-        val intent = Intent(this@AnnouncementListsActivity, ItemAddActivity::class.java)
+    private fun transitionToItemAddActivity(activity: Activity) {
+        val intent = Intent(this@AnnouncementListsActivity, activity::class.java)
         val bundle = Bundle()
         bundle.putSerializable(ALL_CATEGORY_KEY, categoryList)
         intent.putExtra(BUNDLE, bundle)
@@ -74,6 +74,6 @@ class AnnouncementListsActivity : AppCompatActivity() {
 
     private fun getAllCategories() = lifecycleScope.launch {
         daoCategory = App.appDatabase?.getCategoryDao()
-        categoryAdapter.categoryList = categoryList!!
+        categoryAdapter.categoryList = categoryList
     }
 }
