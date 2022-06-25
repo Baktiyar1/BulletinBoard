@@ -17,7 +17,6 @@ class ItemAddTransportModelSpinnerAdapter(
 ) : ArrayAdapter<TransportModel>(context, item_good_category,
     transport_model_name, transport_models) {
 
-
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val transportModel: TransportModel = getItem(position)!!
         val view: View =
@@ -26,6 +25,7 @@ class ItemAddTransportModelSpinnerAdapter(
         binding.apply {
             goodCategoryName.text = transportModel.transportModelName
             Picasso.get().load(transportModel.transportModelIcon).into(goodCategoryImage)
+            actionListener.transportOnClick(position)
         }
         return binding.root
     }
@@ -41,14 +41,11 @@ class ItemAddTransportModelSpinnerAdapter(
             val transportModel = getItem(position)!!
             goodCategoryName.text = transportModel.transportModelName
             Picasso.get().load(transportModel.transportModelIcon).into(goodCategoryImage)
-            root.setOnClickListener {
-                actionListener.transportOnClick(position)
-            }
         }
         return binding.root
     }
 }
 
 interface TransportItemOnClickListener {
-    fun transportOnClick(position: Int)
+    fun transportOnClick(position: Int) : TransportModel
 }

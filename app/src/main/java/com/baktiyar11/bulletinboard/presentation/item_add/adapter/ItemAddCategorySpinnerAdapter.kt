@@ -15,7 +15,7 @@ class ItemAddCategorySpinnerAdapter(
     item_good_category: Int,
     category_name: Int,
     categories: ArrayList<Category>,
-    private val actionListener: CategoryItemOnClickListener
+    private val actionListener: CategoryItemOnClickListener,
 ) : ArrayAdapter<Category>(context, item_good_category, category_name, categories) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
@@ -26,6 +26,7 @@ class ItemAddCategorySpinnerAdapter(
         binding.apply {
             goodCategoryName.text = category.categoryName
             Picasso.get().load(category.categoryIcon).into(goodCategoryImage)
+            actionListener.categoryOnClick(position)
         }
         return binding.root
     }
@@ -33,21 +34,19 @@ class ItemAddCategorySpinnerAdapter(
     override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
         var view: View? = convertView
         if (view == null) {
-            view = LayoutInflater.from(parent.context).inflate(R.layout.item_good_category, parent, false)
+            view = LayoutInflater.from(parent.context)
+                .inflate(R.layout.item_good_category, parent, false)
         }
         val binding = ItemGoodCategoryBinding.bind(view!!)
         binding.apply {
             val category = getItem(position)!!
             goodCategoryName.text = category.categoryName
             Picasso.get().load(category.categoryIcon).into(goodCategoryImage)
-            root.setOnClickListener {
-                actionListener.categoryOnClick(position)
-            }
         }
         return binding.root
     }
 }
 
 interface CategoryItemOnClickListener {
-    fun categoryOnClick(position: Int)
+    fun categoryOnClick(position: Int) : Category
 }

@@ -21,8 +21,10 @@ import com.baktiyar11.bulletinboard.utils.ALL_CATEGORY_KEY
 import com.baktiyar11.bulletinboard.utils.BUNDLE
 import com.baktiyar11.bulletinboard.utils.TRANSPORT
 import com.baktiyar11.bulletinboard.utils.toast
+import com.parse.ParseObject
 
-class ItemAddActivity : AppCompatActivity(), TransportItemOnClickListener, CategoryItemOnClickListener{
+class ItemAddActivity : AppCompatActivity(), CategoryItemOnClickListener,
+    TransportItemOnClickListener {
 
     private val binding: ActivityItemAddBinding by lazy {
         ActivityItemAddBinding.inflate(layoutInflater)
@@ -68,31 +70,42 @@ class ItemAddActivity : AppCompatActivity(), TransportItemOnClickListener, Categ
         }
     }
 
+    private fun addBtn() {
+        binding.apply {
+            val headerText: String = headerMain.text.toString()
+            val descText: String = descMain.text.toString()
+            if (!numberEdit) {
+                val numberText: String = phoneNumberEditText.text.toString()
+                if (headerText.isEmpty() || descText.isEmpty() || numberText.isEmpty()) {
+                    toast("Fill in all the fields!")
+                } else {
+                    var transportObject = ParseObject("Transport")
+                    transportInfoSave(transportObject)
+                }
+            } else {
+                if (headerText.isEmpty() || descText.isEmpty()) {
+                    toast("Fill in all the fields!")
+                }
+            }
+        }
+    }
+
+    private fun transportInfoSave(transportObject: ParseObject)  {
+        binding.apply {
+            transportCategoryInfoSave()
+        }
+    }
+
+    private fun transportCategoryInfoSave() {
+
+    }
+
     private fun getCategory(categoryName: String) {
         categoryList.forEach {
             if (it.categoryName == categoryName) {
                 category = it
             } else {
                 getCategory(categoryName)
-            }
-        }
-    }
-
-    private fun addBtn() {
-        binding.apply {
-            if (!numberEdit) {
-                val headerText: String = headerMain.text.toString()
-                val descText: String = descMain.text.toString()
-                val numberText: String = phoneNumberEditText.text.toString()
-                if (headerText.isEmpty() || descText.isEmpty() || numberText.isEmpty()) {
-                    toast("Fill in all the fields!")
-                }
-            } else {
-                val headerText: String = headerMain.text.toString()
-                val descText: String = descMain.text.toString()
-                if (headerText.isEmpty() || descText.isEmpty()) {
-                    toast("Fill in all the fields!")
-                }
             }
         }
     }
@@ -317,13 +330,11 @@ class ItemAddActivity : AppCompatActivity(), TransportItemOnClickListener, Categ
         }
     }
 
-    override fun transportOnClick(position: Int) {
-        transportModelList[position]
-        toast(transportModelList[position].transportModelName)
+    override fun transportOnClick(position: Int): TransportModel {
+        return transportModelList[position]
     }
 
-    override fun categoryOnClick(position: Int) {
-        categoryList[position]
-        toast(categoryList[position].categoryName)
+    override fun categoryOnClick(position: Int): Category {
+        return categoryList[position]
     }
 }
