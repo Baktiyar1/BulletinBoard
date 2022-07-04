@@ -40,7 +40,6 @@ class RegistrationFragment : Fragment() {
                 val password = signUpPassword.text.toString().trim()
                 val confirm = signUpConfirm.text.toString().trim()
                 signUp(username, email, phone, password, confirm)
-                Log.i("QQQQQ", "sndcndsjk")
             }
         }
     }

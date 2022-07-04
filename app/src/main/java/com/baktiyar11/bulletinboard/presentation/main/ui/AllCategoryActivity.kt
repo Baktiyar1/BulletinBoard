@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.baktiyar11.bulletinboard.databinding.ActivityAllCategoryBinding
 import com.baktiyar11.bulletinboard.domain.models.category.Category
-import com.baktiyar11.bulletinboard.presentation.GetListClass
 import com.baktiyar11.bulletinboard.presentation.details.ui.DetailsCategoryActivity
 import com.baktiyar11.bulletinboard.presentation.item_add.adapter.AddCategoryAdapter
 import com.baktiyar11.bulletinboard.presentation.item_add.adapter.ItemClickListenerAddCategory
@@ -19,7 +18,7 @@ class AllCategoryActivity : AppCompatActivity() {
     private val binding: ActivityAllCategoryBinding by lazy {
         ActivityAllCategoryBinding.inflate(layoutInflater)
     }
-    private var categoryList: ArrayList<Category> = GetListClass().addAllCategory()
+    private var categoryList: ArrayList<Category>? = null
     private val addCategoryAdapter: AddCategoryAdapter by lazy {
         AddCategoryAdapter(object : ItemClickListenerAddCategory {
             override fun showDetailsAddCategory(category: Category) {
@@ -42,7 +41,7 @@ class AllCategoryActivity : AppCompatActivity() {
                     AnnouncementListsActivity::class.java))
             }
 
-            addCategoryAdapter.categoryList = categoryList
+            addCategoryAdapter.categoryList = categoryList!!
             recViewAddAllCategory.adapter = addCategoryAdapter
         }
     }

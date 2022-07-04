@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/category_frame"
@@ -9,8 +10,12 @@
     tools:context=".presentation.item_add.ui.activity.ItemAddActivity">
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout4"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/detailsActivityToolbar"
@@ -49,8 +54,11 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -62,13 +70,12 @@
                 android:id="@+id/textView9"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/select_a_category"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.1"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -76,9 +83,11 @@
                 android:id="@+id/category_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="8dp"
                 android:background="@drawable/spinner_background"
-                android:textColor="#808080"
+                android:descendantFocusability="beforeDescendants"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView9" />
@@ -87,13 +96,12 @@
                 android:id="@+id/chooseCategoryText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/select_a_subcategory"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.1"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/category_spinner" />
 
@@ -101,20 +109,19 @@
                 android:id="@+id/subcategory_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="8dp"
                 android:background="@drawable/spinner_background"
-                android:textColor="#808080"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/chooseCategoryText" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/transporConstraint"
+                android:id="@+id/transportConstraint"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/subcategory_spinner">
 
@@ -122,12 +129,12 @@
                     android:id="@+id/additionalInformation"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
                     android:text="@string/additional_information"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.1"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -139,27 +146,25 @@
                     app:layout_constraintGuide_percent="0.50" />
 
                 <Spinner
-                    android:id="@+id/carModelSpinner"
+                    android:id="@+id/car_model_spinner"
                     android:layout_width="0dp"
                     android:layout_height="60dp"
+                    android:layout_marginTop="8dp"
                     android:background="@drawable/spinner_background"
-                    android:textColor="#808080"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/additionalInformation" />
 
                 <Spinner
-                    android:id="@+id/carTypeModelSpinner"
+                    android:id="@+id/car_type_model_spinner"
                     android:layout_width="0dp"
                     android:layout_height="60dp"
                     android:layout_marginTop="16dp"
-                    android:layout_marginEnd="3dp"
                     android:background="@drawable/spinner_background"
-                    android:textColor="#808080"
                     android:visibility="visible"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/carModelSpinner" />
+                    app:layout_constraintTop_toBottomOf="@+id/car_model_spinner" />
 
                 <EditText
                     android:id="@+id/carTypeModelEditText"
@@ -173,131 +178,114 @@
                     android:textColorHint="@color/categoryColor"
                     android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/carModelSpinner"
+                    app:layout_constraintTop_toBottomOf="@+id/car_model_spinner"
                     tools:ignore="TextFields" />
 
                 <Spinner
-                    android:id="@+id/yearSpinner"
+                    android:id="@+id/year_spinner"
                     android:layout_width="0dp"
                     android:layout_height="60dp"
+                    android:layout_marginEnd="3dp"
                     android:background="@drawable/spinner_background"
-                    android:textColor="#808080"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/guideline3" />
 
                 <Spinner
-                    android:id="@+id/bodyTypeSpinner"
+                    android:id="@+id/body_type_spinner"
                     android:layout_width="0dp"
                     android:layout_height="60dp"
-                    android:layout_marginStart="3dp"
+                    android:layout_marginStart="8dp"
                     android:layout_marginTop="16dp"
                     android:background="@drawable/spinner_background"
-                    android:textColor="#808080"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="@+id/transportGuideline"
-                    app:layout_constraintTop_toBottomOf="@+id/yearSpinner" />
+                    app:layout_constraintTop_toBottomOf="@+id/year_spinner" />
 
                 <Spinner
-                    android:id="@+id/fuelSpinner"
+                    android:id="@+id/fuel_spinner"
                     android:layout_width="0dp"
                     android:layout_height="60dp"
                     android:layout_marginTop="16dp"
-                    android:layout_marginEnd="3dp"
+                    android:layout_marginEnd="8dp"
                     android:background="@drawable/spinner_background"
-                    android:textColor="#808080"
                     app:layout_constraintEnd_toStartOf="@+id/transportGuideline"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/yearSpinner" />
+                    app:layout_constraintTop_toBottomOf="@+id/year_spinner" />
 
                 <Spinner
-                    android:id="@+id/driveUnitSpinner"
+                    android:id="@+id/drive_unit_spinner"
                     android:layout_width="0dp"
                     android:layout_height="60dp"
                     android:layout_marginTop="16dp"
-                    android:layout_marginEnd="3dp"
+                    android:layout_marginEnd="8dp"
                     android:background="@drawable/spinner_background"
-                    android:textColor="#808080"
                     app:layout_constraintEnd_toStartOf="@+id/transportGuideline"
-                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/fuelSpinner" />
+                    app:layout_constraintTop_toBottomOf="@+id/fuel_spinner" />
 
                 <Spinner
-                    android:id="@+id/carColorSpinner"
+                    android:id="@+id/car_color_spinner"
                     android:layout_width="0dp"
                     android:layout_height="60dp"
-                    android:layout_marginStart="3dp"
+                    android:layout_marginStart="8dp"
                     android:layout_marginTop="16dp"
                     android:background="@drawable/spinner_background"
-                    android:textColor="#808080"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="@+id/transportGuideline"
-                    app:layout_constraintTop_toBottomOf="@+id/fuelSpinner" />
+                    app:layout_constraintTop_toBottomOf="@+id/fuel_spinner" />
 
                 <Spinner
-                    android:id="@+id/cppSpinner"
+                    android:id="@+id/cpp_spinner"
                     android:layout_width="0dp"
                     android:layout_height="60dp"
                     android:layout_marginTop="16dp"
-                    android:layout_marginEnd="3dp"
+                    android:layout_marginEnd="8dp"
                     android:background="@drawable/spinner_background"
-                    android:textColor="#808080"
                     app:layout_constraintEnd_toStartOf="@+id/transportGuideline"
-                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/driveUnitSpinner" />
+                    app:layout_constraintTop_toBottomOf="@+id/drive_unit_spinner" />
 
                 <Spinner
-                    android:id="@+id/steeringWheelSpinner"
+                    android:id="@+id/steering_wheel_spinner"
                     android:layout_width="0dp"
                     android:layout_height="60dp"
-                    android:layout_marginStart="3dp"
+                    android:layout_marginStart="8dp"
                     android:layout_marginTop="16dp"
                     android:background="@drawable/spinner_background"
-                    android:textColor="#808080"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="@+id/transportGuideline"
-                    app:layout_constraintTop_toBottomOf="@+id/carColorSpinner" />
+                    app:layout_constraintTop_toBottomOf="@+id/car_color_spinner" />
 
                 <Spinner
-                    android:id="@+id/conditionSpinner"
+                    android:id="@+id/condition_spinner"
                     android:layout_width="0dp"
                     android:layout_height="60dp"
                     android:layout_marginTop="16dp"
-                    android:layout_marginEnd="3dp"
+                    android:layout_marginEnd="8dp"
                     android:background="@drawable/spinner_background"
-                    android:textColor="#808080"
                     app:layout_constraintEnd_toStartOf="@+id/transportGuideline"
-                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/cppSpinner" />
+                    app:layout_constraintTop_toBottomOf="@+id/cpp_spinner" />
 
                 <Spinner
-                    android:id="@+id/engineCapacitySpinner"
+                    android:id="@+id/engine_capacity_spinner"
                     android:layout_width="0dp"
                     android:layout_height="60dp"
-                    android:layout_marginStart="3dp"
+                    android:layout_marginStart="8dp"
                     android:layout_marginTop="16dp"
                     android:background="@drawable/spinner_background"
-                    android:textColor="#808080"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="@+id/transportGuideline"
-                    app:layout_constraintTop_toBottomOf="@+id/steeringWheelSpinner" />
+                    app:layout_constraintTop_toBottomOf="@+id/steering_wheel_spinner" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    app:layout_constraintGuide_percent="0.32282004" />
+                    app:layout_constraintGuide_percent="0.34" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -305,22 +293,23 @@
                 android:id="@+id/textView11"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/product_title"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.1"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/transporConstraint" />
+                app:layout_constraintTop_toBottomOf="@+id/transportConstraint" />
 
             <com.rengwuxian.materialedittext.MaterialEditText
                 android:id="@+id/header_main"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="8dp"
                 android:inputType="textMultiLine"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimary"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView11"
@@ -330,13 +319,12 @@
                 android:id="@+id/textView12"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/product_description"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.1"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/header_main" />
 
@@ -344,8 +332,10 @@
                 android:id="@+id/desc_main"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="8dp"
                 android:inputType="textMultiLine"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textView12"
@@ -355,12 +345,11 @@
                 android:id="@+id/textView14"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/photo"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.1"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/desc_main" />
 
@@ -368,29 +357,15 @@
                 android:id="@+id/imageButton"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="5dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
                 android:background="@drawable/add_button"
                 android:src="@drawable/ic_baseline_photo_camera_24"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView14"
                 tools:ignore="ContentDescription" />
-
-            <TextView
-                android:id="@+id/minimum"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:text="@string/at_least_one_photo"
-                android:textColor="#FF0000"
-                android:textSize="12sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageButton" />
-
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/photo_recycler"
@@ -398,9 +373,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.1"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/minimum" />
+                app:layout_constraintTop_toBottomOf="@+id/imageButton" />
 
             <TextView
                 android:id="@+id/textPrice"
@@ -411,7 +385,6 @@
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.1"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/photo_recycler" />
 
@@ -429,8 +402,9 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/price_constraint"
                     android:layout_width="match_parent"
+                    android:visibility="visible"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="7dp"
+                    android:layout_marginEnd="8dp"
                     android:padding="3dp">
 
                     <androidx.constraintlayout.widget.Guideline
@@ -447,6 +421,8 @@
                         android:layout_marginStart="10dp"
                         android:layout_marginEnd="10dp"
                         android:inputType="number"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorPrimary"
                         android:textAlignment="center"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/guideline"
@@ -457,13 +433,14 @@
                         android:id="@+id/currency_spinner"
                         android:layout_width="0dp"
                         android:layout_height="60dp"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
                         android:background="@drawable/spinner_background"
-                        android:textColor="#808080"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/guideline"
                         app:layout_constraintTop_toTopOf="parent" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <RelativeLayout
@@ -499,9 +476,8 @@
                 android:id="@+id/region_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:background="@drawable/spinner_background"
-                android:textColor="#808080"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/price_block" />
@@ -510,9 +486,8 @@
                 android:id="@+id/city_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:background="@drawable/spinner_background"
-                android:textColor="#808080"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/region_spinner" />
@@ -524,7 +499,8 @@
                 android:layout_marginTop="8dp"
                 android:background="@drawable/spinner_background"
                 android:visibility="gone"
-                app:hintTextColor="#808080"
+                android:textStyle="bold"
+                app:hintTextColor="@color/colorPrimary"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/city_spinner" />
@@ -539,6 +515,8 @@
                 android:padding="8dp"
                 android:textColorHint="#000000"
                 android:visibility="visible"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimary"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/city_spinner"
@@ -549,7 +527,7 @@
                 android:id="@+id/my_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="76dp"
+                android:layout_marginTop="72dp"
                 android:text="@string/use_my_number"
                 android:textAlignment="center"
                 android:textSize="16sp"
@@ -566,7 +544,6 @@
                 android:layout_centerInParent="true"
                 android:theme="@style/ProgressBar"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/my_number"
                 app:layout_constraintTop_toTopOf="@+id/my_number" />
 
@@ -574,9 +551,9 @@
                 android:id="@+id/add_btn"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="5dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
                 android:background="@drawable/add_button"
                 android:text="@string/add"
                 android:textColor="@android:color/white"
@@ -586,4 +563,4 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

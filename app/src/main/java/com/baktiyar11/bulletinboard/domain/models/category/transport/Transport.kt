@@ -1,17 +1,10 @@
 package com.baktiyar11.bulletinboard.domain.models.category.transport
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
-import java.util.*
 
-@Entity(tableName = "transport_database")
 data class Transport(
-    @PrimaryKey(autoGenerate = true) val idTransportRoom: Int = Random().nextInt(1000),
-    @SerializedName("objectsId") var transportId: String,
-    @SerializedName("categoryId") var transportCategoryId: String,
-    @SerializedName("title") var transportTitle: String,
+    @SerializedName("objectId") var transportId: String,
     @SerializedName("category") var transportCategory: String,
     @SerializedName("subCategory") var transportSubCategory: String,
     @SerializedName("model") var transportModel: String,
@@ -32,4 +25,5 @@ data class Transport(
     @SerializedName("city") var transportCity: String,
     @SerializedName("userId") var transportUserID: String,
     @SerializedName("userName") var transportUserName: String,
+    @SerializedName("userPhone") var transportUserPhone: String,
 ) : Serializable

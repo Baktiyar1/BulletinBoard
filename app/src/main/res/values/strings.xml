@@ -52,6 +52,8 @@
     <string name="category">Category</string>
     <string name="category_description">Category description</string>
     <string name="list_all_category">List all category</string>
+    <string name="right"><![CDATA[>]]></string>
+    <string name="similar_ads">Similar ads</string>
 
     <string-array name="categories">
         <item>TRANSPORT</item>
@@ -77,6 +79,123 @@
         <item>SPARE PARTS FOR CARGO AND AGRICULTURAL TRANSPORT</item>
         <item>WATER TRANSPORT</item>
         <item>OTHER TRANSPORT</item>
+    </string-array>
+    
+    <string-array name="sub_real_estate_category">
+        <item>Apartments</item>
+        <item>New building</item>
+        <item>At home</item>
+        <item>Land plots</item>
+        <item>Сommercial real estate</item>
+        <item>Rooms</item>
+        <item>Garages</item>
+    </string-array>
+
+    <string-array name="sub_taxi_category">
+        <item>City taxi</item>
+        <item>Intercity taxi</item>
+        <item>Freight transportation</item>
+        <item>For celebrations</item>
+    </string-array>
+    
+    <string-array name="sub_electronics_category">
+        <item>Mobile phones and accessories</item>
+        <item>Computers, laptops and tablets</item>
+        <item>Appliances</item>
+        <item>Kitchen appliances</item>
+        <item>Video games and console</item>
+        <item>TV and video</item>
+        <item>Audio</item>
+        <item>Auto electronics</item>
+        <item>Photo and video camera</item>
+    </string-array>
+
+    <string-array name="sub_services_category">
+        <item>Auto services</item>
+        <item>Construction and repair</item>
+        <item>Fashion, beauty and health</item>
+        <item>Express delivery</item>
+        <item>Business equipment</item>
+        <item>Equipment repair</item>
+        <item>Furniture services</item>
+        <item>Training, courses</item>
+        <item>Business Services</item>
+        <item>IT, internet, telecom</item>
+        <item>Advertising and printing</item>
+        <item>Cleaning service</item>
+        <item>Catering</item>
+        <item>Tailoring and repair of clothes</item>
+        <item>Needlework</item>
+        <item>Babysitters, nurses</item>
+        <item>Legal services</item>
+        <item>Funeral services</item>
+        <item>Security services</item>
+        <item>Real estate services</item>
+        <item>Visas and travel</item>
+        <item>Other services</item>
+    </string-array>
+
+    <string-array name="sub_work_category">
+        <item>Job search</item>
+        <item>Search for colleagues</item>
+    </string-array>
+
+    <string-array name="sub_personal_items_category">
+        <item>Women clothing</item>
+        <item>Women shoes</item>
+        <item>Men clothing</item>
+        <item>Men shoes</item>
+        <item>Wedding dresses and accessories</item>
+        <item>Accessories</item>
+        <item>Beauty and health</item>
+        <item>Other</item>
+    </string-array>
+
+    <string-array name="sub_animals_category">
+        <item>Pet supplies</item>
+        <item>Cats</item>
+        <item>Dogs</item>
+        <item>Aquariums</item>
+        <item>rodents</item>
+        <item>Birds</item>
+        <item>Farming animals</item>
+        <item>Other animals</item>
+    </string-array>
+
+    <string-array name="sub_sport_and_hobbies_category">
+        <item>Bicycles</item>
+        <item>Bicycle accessories</item>
+        <item>Sports and recreation</item>
+        <item>Musical instruments</item>
+        <item>Art and collecting</item>
+        <item>Hunting and fishing</item>
+        <item>Books, magazines, CD and DVD</item>
+    </string-array>
+
+    <string-array name="sub_medical_products_category">
+        <item>Medical masks</item>
+        <item>Antiseptics</item>
+        <item>Thermometers, thermal imagers</item>
+        <item>Oxygen concentrators</item>
+        <item>Pulse oximeters</item>
+        <item>Oxygen cushion</item>
+        <item>Breathalyzers</item>
+        <item>Bandages</item>
+        <item>Shoe covers</item>
+        <item>Bandages</item>
+        <item>Wheelchairs</item>
+        <item>Inhalers</item>
+        <item>Medical furniture</item>
+        <item>Medical clothing</item>
+    </string-array>
+
+    <string-array name="sub_children_word_category">
+        <item>Children clothing and footwear</item>
+        <item>Children furniture</item>
+        <item>Strollers</item>
+        <item>Toys</item>
+        <item>Car seats</item>
+        <item>Other goods for children</item>
     </string-array>
 
     <string-array name="transport_model_name">
@@ -211,7 +330,7 @@
         <item>XD3</item>
         <item>Roadster</item>
     </string-array>
-
+    
     <string-array name="model_audi_name">
         <item>50</item>
         <item>80</item>

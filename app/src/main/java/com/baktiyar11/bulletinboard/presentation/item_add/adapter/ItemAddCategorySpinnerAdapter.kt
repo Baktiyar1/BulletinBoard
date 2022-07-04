@@ -33,13 +33,13 @@ class ItemAddCategorySpinnerAdapter(
 
     override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
         var view: View? = convertView
+        val category = getItem(position)!!
         if (view == null) {
             view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_good_category, parent, false)
         }
         val binding = ItemGoodCategoryBinding.bind(view!!)
         binding.apply {
-            val category = getItem(position)!!
             goodCategoryName.text = category.categoryName
             Picasso.get().load(category.categoryIcon).into(goodCategoryImage)
         }
@@ -48,5 +48,5 @@ class ItemAddCategorySpinnerAdapter(
 }
 
 interface CategoryItemOnClickListener {
-    fun categoryOnClick(position: Int) : Category
+    fun categoryOnClick(position: Int)
 }

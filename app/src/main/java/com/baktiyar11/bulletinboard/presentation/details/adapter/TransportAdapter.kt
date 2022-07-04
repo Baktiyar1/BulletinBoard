@@ -8,10 +8,6 @@ import com.baktiyar11.bulletinboard.R
 import com.baktiyar11.bulletinboard.databinding.ItemProductsBinding
 import com.baktiyar11.bulletinboard.domain.models.category.transport.Transport
 
-interface ItemClickListenerTransport {
-    fun showDetailsTransport(transport: Transport)
-}
-
 class TransportAdapter(private val actionListener: ItemClickListenerTransport)
     : RecyclerView.Adapter<TransportAdapter.TransportViewHolder>() {
 
@@ -46,4 +42,8 @@ class TransportAdapter(private val actionListener: ItemClickListenerTransport)
             }
         }
     }
+}
+
+interface ItemClickListenerTransport {
+    fun showDetailsTransport(transport: Transport)
 }

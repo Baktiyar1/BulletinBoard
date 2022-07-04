@@ -9,10 +9,6 @@ import com.baktiyar11.bulletinboard.databinding.ItemCategoryBinding
 import com.baktiyar11.bulletinboard.domain.models.category.Category
 import com.squareup.picasso.Picasso
 
-interface ItemClickListenerCategory {
-    fun showDetailsCategory(category: Category)
-}
-
 class CategoryAdapter(private val actionListener: ItemClickListenerCategory) :
     RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
 
@@ -47,4 +43,8 @@ class CategoryAdapter(private val actionListener: ItemClickListenerCategory) :
             }
         }
     }
+}
+
+interface ItemClickListenerCategory {
+    fun showDetailsCategory(category: Category)
 }

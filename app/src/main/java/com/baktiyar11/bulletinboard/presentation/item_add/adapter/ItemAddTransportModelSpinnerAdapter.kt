@@ -14,8 +14,7 @@ class ItemAddTransportModelSpinnerAdapter(
     context: Context, item_good_category: Int,
     transport_model_name: Int, transport_models: ArrayList<TransportModel>,
     private val actionListener: TransportItemOnClickListener,
-) : ArrayAdapter<TransportModel>(context, item_good_category,
-    transport_model_name, transport_models) {
+) : ArrayAdapter<TransportModel>(context, item_good_category, transport_model_name, transport_models) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val transportModel: TransportModel = getItem(position)!!
@@ -47,5 +46,5 @@ class ItemAddTransportModelSpinnerAdapter(
 }
 
 interface TransportItemOnClickListener {
-    fun transportOnClick(position: Int) : TransportModel
+    fun transportOnClick(position: Int)
 }

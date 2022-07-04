@@ -1,15 +1,11 @@
 package com.baktiyar11.bulletinboard.domain.models.category
 
-import android.os.Parcelable
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import kotlinx.parcelize.Parcelize
+import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
-@Entity(tableName = "category_database")
 data class Category(
-    @PrimaryKey val idCategoryRoom: Int,
-    var categoryName: String,
-    var categoryDescription: String,
-    var categoryIcon: Int,
+    @SerializedName("objectId") val idCategory: Int,
+    @SerializedName("title") var categoryName: String,
+    @SerializedName("description") var categoryDescription: String,
+    @SerializedName("icon") var categoryIcon: Int,
 ) : Serializable
