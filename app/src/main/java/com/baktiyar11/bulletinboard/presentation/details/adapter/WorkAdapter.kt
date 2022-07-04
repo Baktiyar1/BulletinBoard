@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.baktiyar11.bulletinboard.R
 import com.baktiyar11.bulletinboard.databinding.ItemProductsBinding
-import com.baktiyar11.bulletinboard.domain.models.category.work.Work
 
 class WorkAdapter(private val actionListener: ItemClickListenerWork) :
     RecyclerView.Adapter<WorkAdapter.WorkViewHolder>() {
