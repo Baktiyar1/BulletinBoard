@@ -6,7 +6,6 @@ import com.baktiyar11.bulletinboard.domain.models.category.electronics.Electroni
 import com.baktiyar11.bulletinboard.domain.models.category.giveForFree.GiveForFreeResponse
 import com.baktiyar11.bulletinboard.domain.models.category.medicalProducts.MedicalProductsResponse
 import com.baktiyar11.bulletinboard.domain.models.category.personalItems.PersonalItemsResponse
-import com.baktiyar11.bulletinboard.domain.models.category.realEstate.RealEstate
 import com.baktiyar11.bulletinboard.domain.models.category.realEstate.RealEstateResponse
 import com.baktiyar11.bulletinboard.domain.models.category.services.ServicesResponse
 import com.baktiyar11.bulletinboard.domain.models.category.sportAndHobbies.SportAndHobbiesResponse

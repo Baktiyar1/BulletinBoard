@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.baktiyar11.bulletinboard.R
 import com.baktiyar11.bulletinboard.databinding.ItemProductsBinding
 import com.baktiyar11.bulletinboard.domain.models.category.taxi.Taxi
-import com.baktiyar11.bulletinboard.domain.models.category.transport.Transport
 
 class TaxiAdapter (private val actionListener: ItemClickListenerTaxi) :
     RecyclerView.Adapter<TaxiAdapter.TaxiViewHolder>() {

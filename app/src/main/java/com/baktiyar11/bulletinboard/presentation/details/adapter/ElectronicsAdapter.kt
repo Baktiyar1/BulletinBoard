@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.baktiyar11.bulletinboard.R
 import com.baktiyar11.bulletinboard.databinding.ItemProductsBinding
 import com.baktiyar11.bulletinboard.domain.models.category.electronics.Electronics
-import com.baktiyar11.bulletinboard.domain.models.category.taxi.Taxi
 
 class ElectronicsAdapter(private val actionListener: ItemClickListenerElectronics) :
     RecyclerView.Adapter<ElectronicsAdapter.ElectronicsViewHolder>() {
