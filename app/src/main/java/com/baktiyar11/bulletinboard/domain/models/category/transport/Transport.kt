@@ -1,29 +1,33 @@
 package com.baktiyar11.bulletinboard.domain.models.category.transport
 
+import com.baktiyar11.bulletinboard.domain.models.Image
+import com.baktiyar11.bulletinboard.domain.models.category.Abstract
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 data class Transport(
-    @SerializedName("objectId") var transportId: String,
-    @SerializedName("category") var transportCategory: String,
-    @SerializedName("subCategory") var transportSubCategory: String,
-    @SerializedName("model") var transportModel: String,
-    @SerializedName("brand") var transportBrand: String,
-    @SerializedName("year") var transportYear: String,
-    @SerializedName("bodyType") var transportBodyType: String,
-    @SerializedName("fuelType") var transportFuelType: String,
-    @SerializedName("color") var transportColor: String,
-    @SerializedName("RRCType") var transportRRCType: String,
-    @SerializedName("steeringWheel") var transportSteeringWheel: String,
-    @SerializedName("condition") var transportCondition: String,
-    @SerializedName("engineCapacity") var transportEngineCapacity: String,
-    @SerializedName("header") var transportHeader: String,
-    @SerializedName("description") var transportDescription: String,
-    @SerializedName("price") var transportPrice: String,
-    @SerializedName("currency") var transportCurrency: String,
-    @SerializedName("region") var transportRegion: String,
-    @SerializedName("city") var transportCity: String,
-    @SerializedName("userId") var transportUserID: String,
-    @SerializedName("userName") var transportUserName: String,
-    @SerializedName("userPhone") var transportUserPhone: String,
-) : Serializable
+    @SerializedName("objectId") var id: String,
+    @SerializedName("category") var category: String,
+    @SerializedName("subCategory") var subcategory: String,
+    @SerializedName("model") var model: String,
+    @SerializedName("brand") var brand: String,
+    @SerializedName("year") var year: String,
+    @SerializedName("bodyType") var bodyType: String,
+    @SerializedName("driverUnit") var driverUnit: String,
+    @SerializedName("fuelType") var fuelType: String,
+    @SerializedName("color") var color: String,
+    @SerializedName("RRCType") var rrcType: String,
+    @SerializedName("steeringWheel") var steeringWheel: String,
+    @SerializedName("condition") var condition: String,
+    @SerializedName("engineCapacity") var engineCapacity: String,
+    @SerializedName("header") var header: String,
+    @SerializedName("description") var description: String,
+    @SerializedName("price") var price: String,
+    @SerializedName("currency") var currency: String,
+    @SerializedName("region") var region: String,
+    @SerializedName("city") var city: String,
+    @SerializedName("userId") var userID: String,
+    @SerializedName("userName") var userName: String,
+    @SerializedName("userPhone") var userPhone: String,
+    @SerializedName("icon") var icon: Image
+) : Serializable, Abstract()

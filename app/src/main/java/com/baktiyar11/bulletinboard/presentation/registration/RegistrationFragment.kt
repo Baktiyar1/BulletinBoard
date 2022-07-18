@@ -1,6 +1,5 @@
 package com.baktiyar11.bulletinboard.presentation.registration
 
-import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -8,12 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.baktiyar11.bulletinboard.domain.models.login.ServerResponse
+import com.baktiyar11.bulletinboard.SharedPreference
 import com.baktiyar11.bulletinboard.data.RetrofitBuilder
 import com.baktiyar11.bulletinboard.databinding.FragmentRegistrationBinding
+import com.baktiyar11.bulletinboard.domain.models.login.ServerResponse
 import com.baktiyar11.bulletinboard.domain.models.login.User
-import com.baktiyar11.bulletinboard.presentation.App
-import com.baktiyar11.bulletinboard.presentation.main.ui.AnnouncementListsActivity
+import com.baktiyar11.bulletinboard.presentation.main.ui.activity.AnnouncementListsActivity
 import com.baktiyar11.bulletinboard.utils.toast
 import retrofit2.Call
 import retrofit2.Callback
@@ -25,8 +24,9 @@ class RegistrationFragment : Fragment() {
         FragmentRegistrationBinding.inflate(layoutInflater)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        // Inflate the layout for this fragment\
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?,
+    ): View {
         return binding.root
     }
 
@@ -44,30 +44,37 @@ class RegistrationFragment : Fragment() {
         }
     }
 
-    private fun signUp(username: String, email: String, phone: String, password: String, confirm: String) {
+    private fun signUp(
+        username: String, email: String, phone: String,
+        password: String, confirm: String,
+    ) {
         binding.apply {
-            if (username.isNotEmpty() || email.isNotEmpty() || phone.isNotEmpty() || password.isNotEmpty() || confirm.isNotEmpty()) {
+            if (username.isNotEmpty() && email.isNotEmpty() && phone.isNotEmpty() &&
+                password.isNotEmpty() && password.length >= 8 &&
+                confirm.isNotEmpty() && confirm.length >= 8
+            ) {
                 if (password == confirm) {
-                    val user = User()
-                    user.userEmail = email
-                    user.userPhone = phone
-                    user.username = username
-                    user.userPassword = password
+                    signUpButton.isClickable = false
+                    binding.registerProgress.visibility = View.VISIBLE
+                    val user = User(userEmail = email, userPhone = phone, username = username,
+                        userPassword = password,
+//                        userIcon = null
+                    )
                     val api = RetrofitBuilder.api.createUser(user)
                     api.enqueue(object : Callback<ServerResponse> {
                         override fun onResponse(
-                            call: Call<ServerResponse>,
-                            response: Response<ServerResponse>,
+                            call: Call<ServerResponse>, response: Response<ServerResponse>,
                         ) {
                             if (response.isSuccessful) {
-                                toast("New user ${user.username} is created!")
-                                App.pref = requireActivity().getSharedPreferences("pref", MODE_PRIVATE)
-                                val editor = App.pref?.edit()
-                                editor?.putString("userName", user.username)
-                                editor?.putString("phone", user.userPhone)
-                                editor?.apply()
-                                startActivity(Intent(requireActivity(), AnnouncementListsActivity::class.java))
-                            }
+                                val newUser = User(objectId = response.body()?.objectId,
+//                                    userIcon = null,
+                                    userPhone = phone, userPassword = password,
+                                    username = username, userEmail = email,
+                                    sessionToken = response.body()?.sessionToken)
+                                SharedPreference().saveCurrentUser(newUser, requireActivity())
+                                startActivity(Intent(requireActivity(),
+                                    AnnouncementListsActivity::class.java))
+                            } else signUpButton.isClickable = true
                         }
 
                         override fun onFailure(call: Call<ServerResponse>, t: Throwable) {
@@ -77,9 +84,7 @@ class RegistrationFragment : Fragment() {
                 } else {
                     toast("Fill in a password or check if your passwords match!")
                 }
-            } else {
-                toast("Fill in all the fields!")
-            }
+            } else toast("Fill in all the fields!")
         }
     }
 }

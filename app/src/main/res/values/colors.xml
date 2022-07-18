@@ -12,9 +12,11 @@
     <color name="colorPrimary">#000</color>
     <color name="colorPrimaryDark">#000</color>
     <color name="colorAccent">#fff</color>
+    <color name="colorNavHeader">#D61378</color>
     <color name="btnRed">#FFC107</color>
     <color name="greenColor">#4CAF50</color>
     <color name="categoryColor">#808080</color>
     <color name="green">#50B952</color>
     <color name="red">#C30303</color>
+    <color name="colorSetting">#35AF42</color>
 </resources>

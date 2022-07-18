@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.baktiyar11.bulletinboard.R
 import com.baktiyar11.bulletinboard.databinding.ItemProductsBinding
 import com.baktiyar11.bulletinboard.domain.models.category.taxi.Taxi
+import com.squareup.picasso.Picasso
 
 class TaxiAdapter (private val actionListener: ItemClickListenerTaxi) :
     RecyclerView.Adapter<TaxiAdapter.TaxiViewHolder>() {
@@ -34,8 +35,9 @@ class TaxiAdapter (private val actionListener: ItemClickListenerTaxi) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(taxi: Taxi) {
             binding.apply {
-                productItemPrice.text = taxi.priceTaxi
-                productItemHeader.text = taxi.headerTaxi
+                productItemPrice.text = taxi.price
+                productItemHeader.text = taxi.header
+                Picasso.get().load(taxi.icon.url).into(goodImageItem)
             }
             itemView.setOnClickListener {
                 actionListener.showDetailsTaxi(taxi)

@@ -1,4 +1,4 @@
-package com.baktiyar11.bulletinboard.presentation.main.ui
+package com.baktiyar11.bulletinboard.presentation.main.ui.activity
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity

@@ -35,7 +35,7 @@
                 android:background="?android:attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:focusable="true"
-                app:srcCompat="@drawable/ic_baseline_close_24"
+                app:srcCompat="@drawable/ic_close"
                 tools:ignore="ContentDescription"
                 tools:layout_editor_absoluteX="424dp"
                 tools:layout_editor_absoluteY="13dp" />
@@ -71,11 +71,12 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 android:text="@string/select_a_category"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -122,6 +123,7 @@
                 android:layout_height="wrap_content"
                 android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.555"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/subcategory_spinner">
 
@@ -361,51 +363,67 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:background="@drawable/add_button"
-                android:src="@drawable/ic_baseline_photo_camera_24"
+                android:src="@drawable/ic_photo_camera"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView14"
                 tools:ignore="ContentDescription" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/photo_recycler"
-                android:layout_width="match_parent"
+
+            <TextView
+                android:id="@+id/minimum"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:text="@string/only_one_photo"
+                android:textSize="12sp"
+                android:textColor="#FF0000"
+                android:layout_marginStart="5dp"
+                app:layout_constraintTop_toBottomOf="@+id/imageButton"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <ImageView
+                android:id="@+id/photo_recycler"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
                 android:layout_margin="8dp"
+                android:scaleType="centerCrop"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageButton" />
+                app:layout_constraintTop_toBottomOf="@+id/minimum"
+                tools:ignore="ContentDescription" />
 
             <TextView
                 android:id="@+id/textPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/price"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/photo_recycler" />
+                app:layout_constraintTop_toBottomOf="@+id/textView14" />
 
             <LinearLayout
                 android:id="@+id/price_block"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="8dp"
                 android:orientation="vertical"
                 android:weightSum="3"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textPrice">
+                app:layout_constraintTop_toBottomOf="@+id/photo_recycler">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/price_constraint"
                     android:layout_width="match_parent"
-                    android:visibility="visible"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
-                    android:padding="3dp">
+                    android:padding="3dp"
+                    android:visibility="visible">
 
                     <androidx.constraintlayout.widget.Guideline
                         android:id="@+id/guideline"
@@ -421,9 +439,10 @@
                         android:layout_marginStart="10dp"
                         android:layout_marginEnd="10dp"
                         android:inputType="number"
-                        android:textStyle="bold"
-                        android:textColor="@color/colorPrimary"
                         android:textAlignment="center"
+                        android:textColor="@color/colorPrimary"
+                        android:textStyle="bold"
+                        android:hint="@string/price"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/guideline"
                         app:layout_constraintStart_toStartOf="parent"
@@ -434,7 +453,6 @@
                         android:layout_width="0dp"
                         android:layout_height="60dp"
                         android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp"
                         android:background="@drawable/spinner_background"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -496,14 +514,18 @@
                 android:id="@+id/phoneNumberTextView"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
+                android:paddingTop="18dp"
+                android:paddingStart="16dp"
                 android:background="@drawable/spinner_background"
+                android:textColor="@color/colorPrimaryDark"
                 android:visibility="gone"
                 android:textStyle="bold"
-                app:hintTextColor="@color/colorPrimary"
+                android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/city_spinner" />
+                app:layout_constraintTop_toBottomOf="@+id/city_spinner"
+                tools:ignore="RtlSymmetry" />
 
             <EditText
                 android:id="@+id/phoneNumberEditText"
@@ -513,14 +535,13 @@
                 android:layout_marginBottom="8dp"
                 android:inputType="number"
                 android:padding="8dp"
-                android:textColorHint="#000000"
+                android:hint="@string/_996_phone"
                 android:visibility="visible"
                 android:textStyle="bold"
                 android:textColor="@color/colorPrimary"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/city_spinner"
-                app:met_mask="+996 (###) ## ## ##"
                 tools:ignore="Autofill,TextFields" />
 
             <TextView

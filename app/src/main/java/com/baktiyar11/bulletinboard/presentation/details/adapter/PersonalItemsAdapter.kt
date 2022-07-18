@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.baktiyar11.bulletinboard.R
 import com.baktiyar11.bulletinboard.databinding.ItemProductsBinding
 import com.baktiyar11.bulletinboard.domain.models.category.personalItems.PersonalItems
+import com.squareup.picasso.Picasso
 
 class PersonalItemsAdapter(private val actionListener: ItemClickListenerPersonalItems) :
     RecyclerView.Adapter<PersonalItemsAdapter.PersonalItemsViewHolder>() {
@@ -34,8 +35,9 @@ class PersonalItemsAdapter(private val actionListener: ItemClickListenerPersonal
         RecyclerView.ViewHolder(binding.root) {
         fun bind(personalItems: PersonalItems) {
             binding.apply {
-                productItemPrice.text = personalItems.pricePersonalItems
-                productItemHeader.text = personalItems.headerPersonalItems
+                productItemPrice.text = personalItems.price
+                productItemHeader.text = personalItems.header
+                Picasso.get().load(personalItems.icon.url).into(goodImageItem)
             }
             itemView.setOnClickListener {
                 actionListener.showDetailsPersonalItems(personalItems)

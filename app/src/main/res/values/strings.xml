@@ -44,7 +44,7 @@
     <string name="product_title">Product title</string>
     <string name="product_description">Product description</string>
     <string name="photo">Photo</string>
-    <string name="at_least_one_photo">*at least one photo</string>
+    <string name="only_one_photo">*only one photo</string>
     <string name="price">Price</string>
     <string name="negotiable">Negotiable</string>
     <string name="use_my_number">Use my number</string>
@@ -54,6 +54,32 @@
     <string name="list_all_category">List all category</string>
     <string name="right"><![CDATA[>]]></string>
     <string name="similar_ads">Similar ads</string>
+    <string name="setting">Settings</string>
+    <string name="night_mode">cgv</string>
+    <string name="select_language">bv</string>
+    <string name="choose_language">vgh</string>
+    <string name="language">hj</string>
+    <string name="share">Share</string>
+    <string name="search">Search</string>
+    <string name="favorite">Favorite</string>
+    <string name="login">LogIn</string>
+    <string name="registration">Registration</string>
+    <string name="my_account">My Account</string>
+    <string name="settings">Settings</string>
+    <string name="logout">Logout</string>
+    <string name="log_in">Log in</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="full_name">Full name</string>
+    <string name="password_minimum_8_characters">Password (minimum 8 characters)</string>
+    <string name="confirm_the_password">Confirm the password</string>
+    <string name="_996">+996 </string>
+    <string name="username">Username</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="phone">Phone</string>
+    <string name="_996_phone">+996 ### ## ## ##</string>
+    <string name="real_estate">Real estate</string>
 
     <string-array name="categories">
         <item>TRANSPORT</item>
@@ -80,7 +106,7 @@
         <item>WATER TRANSPORT</item>
         <item>OTHER TRANSPORT</item>
     </string-array>
-    
+
     <string-array name="sub_real_estate_category">
         <item>Apartments</item>
         <item>New building</item>
@@ -97,7 +123,7 @@
         <item>Freight transportation</item>
         <item>For celebrations</item>
     </string-array>
-    
+
     <string-array name="sub_electronics_category">
         <item>Mobile phones and accessories</item>
         <item>Computers, laptops and tablets</item>
@@ -330,7 +356,7 @@
         <item>XD3</item>
         <item>Roadster</item>
     </string-array>
-    
+
     <string-array name="model_audi_name">
         <item>50</item>
         <item>80</item>
@@ -2299,7 +2325,7 @@
         <item>11.9</item>
         <item>12.0</item>
     </string-array>
-    
+
     <string-array name="volute">
         <item>KGS</item>
         <item>USD</item>
@@ -2314,7 +2340,7 @@
         <item>Osh</item>
         <item>Batken</item>
     </string-array>
-    
+
     <string-array name="cities_and_villages_chui">
         <item>Bishkek</item>
         <item>Belovodskoe</item>

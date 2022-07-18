@@ -4,11 +4,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.viewpager2.widget.ViewPager2
 import com.baktiyar11.bulletinboard.R
+import com.baktiyar11.bulletinboard.SharedPreference
 import com.baktiyar11.bulletinboard.databinding.ActivitySignBinding
-import com.baktiyar11.bulletinboard.presentation.main.ui.AnnouncementListsActivity
+import com.baktiyar11.bulletinboard.presentation.main.ui.activity.AnnouncementListsActivity
 import com.baktiyar11.bulletinboard.presentation.splash.adapter.ViewPagerAdapter
 import com.baktiyar11.bulletinboard.utils.intentClearTask
-import com.parse.ParseUser
 
 class SignActivity : AppCompatActivity() {
 
@@ -23,7 +23,7 @@ class SignActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        val user = ParseUser.getCurrentUser()
+        val user = SharedPreference().getCurrentUser(this)
         if (user != null) {
             intentClearTask(AnnouncementListsActivity())
         }

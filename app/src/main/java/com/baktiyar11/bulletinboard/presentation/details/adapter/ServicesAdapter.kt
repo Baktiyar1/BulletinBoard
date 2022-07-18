@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.baktiyar11.bulletinboard.R
 import com.baktiyar11.bulletinboard.databinding.ItemProductsBinding
 import com.baktiyar11.bulletinboard.domain.models.category.services.Services
+import com.squareup.picasso.Picasso
 
 class ServicesAdapter(private val actionListener: ItemClickListenerServices) :
     RecyclerView.Adapter<ServicesAdapter.ServicesViewHolder>() {
@@ -34,8 +35,9 @@ class ServicesAdapter(private val actionListener: ItemClickListenerServices) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(services: Services) {
             binding.apply {
-                productItemPrice.text = services.priceServices
-                productItemHeader.text = services.headerServices
+                productItemPrice.text = services.price
+                productItemHeader.text = services.header
+                Picasso.get().load(services.icon.url).into(goodImageItem)
             }
             itemView.setOnClickListener {
                 actionListener.showDetailsServices(services)

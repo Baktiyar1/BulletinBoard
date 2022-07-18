@@ -20,7 +20,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:menu="@menu/menu_bot_nav_cont" />
+        app:menu="@menu/bottom_navigation_menu" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/view_pager"

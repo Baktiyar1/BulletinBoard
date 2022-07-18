@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="5dp"
-    tools:context=".presentation.main.ui.AllCategoryActivity">
+    tools:context=".presentation.main.ui.activity.AllCategoryActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout5"
@@ -33,7 +33,7 @@
                 android:background="?android:attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:focusable="true"
-                app:srcCompat="@drawable/ic_baseline_close_24"
+                app:srcCompat="@drawable/ic_close"
                 tools:ignore="ContentDescription"
                 tools:layout_editor_absoluteX="424dp"
                 tools:layout_editor_absoluteY="13dp" />

@@ -6,6 +6,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.baktiyar11.bulletinboard.R
 import com.baktiyar11.bulletinboard.databinding.ItemProductsBinding
+import com.baktiyar11.bulletinboard.domain.models.category.work.Work
+import com.squareup.picasso.Picasso
 
 class WorkAdapter(private val actionListener: ItemClickListenerWork) :
     RecyclerView.Adapter<WorkAdapter.WorkViewHolder>() {
@@ -33,8 +35,9 @@ class WorkAdapter(private val actionListener: ItemClickListenerWork) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(work: Work) {
             binding.apply {
-                productItemPrice.text = work.priceWork
-                productItemHeader.text = work.headerWork
+                productItemPrice.text = work.price
+                productItemHeader.text = work.header
+                Picasso.get().load(work.icon.url).into(goodImageItem)
             }
             itemView.setOnClickListener {
                 actionListener.showDetailsWork(work)

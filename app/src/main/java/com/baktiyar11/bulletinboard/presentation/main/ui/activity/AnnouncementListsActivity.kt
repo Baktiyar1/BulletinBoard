@@ -1,33 +1,52 @@
-package com.baktiyar11.bulletinboard.presentation.main.ui
+package com.baktiyar11.bulletinboard.presentation.main.ui.activity
 
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.view.MenuItem
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
 import com.baktiyar11.bulletinboard.R
+import com.baktiyar11.bulletinboard.SharedPreference
 import com.baktiyar11.bulletinboard.databinding.ActivityAnnouncementListsBinding
 import com.baktiyar11.bulletinboard.domain.models.category.Category
+import com.baktiyar11.bulletinboard.domain.models.login.User
 import com.baktiyar11.bulletinboard.presentation.details.ui.DetailsCategoryActivity
 import com.baktiyar11.bulletinboard.presentation.item_add.ui.activity.ItemAddActivity
 import com.baktiyar11.bulletinboard.presentation.main.adapter.CategoryAdapter
 import com.baktiyar11.bulletinboard.presentation.main.adapter.ItemClickListenerCategory
-import com.baktiyar11.bulletinboard.utils.ALL_CATEGORY_KEY
-import com.baktiyar11.bulletinboard.utils.BUNDLE
-import com.baktiyar11.bulletinboard.utils.CATEGORY_KEY
+import com.baktiyar11.bulletinboard.presentation.registration.SignActivity
+import com.baktiyar11.bulletinboard.utils.*
 import com.denzcoskun.imageslider.constants.ScaleTypes
 import com.denzcoskun.imageslider.models.SlideModel
+import com.google.android.material.navigation.NavigationView
+import com.squareup.picasso.Picasso
 import java.util.*
 
-class AnnouncementListsActivity : AppCompatActivity() {
+class AnnouncementListsActivity : AppCompatActivity(),
+    NavigationView.OnNavigationItemSelectedListener {
 
     private val binding: ActivityAnnouncementListsBinding by lazy {
         ActivityAnnouncementListsBinding.inflate(layoutInflater)
     }
     private var categoryList: ArrayList<Category>? = null
+    private val user: User by lazy {
+        SharedPreference().getCurrentUser(this@AnnouncementListsActivity) as User
+    }
+    private val toggle: ActionBarDrawerToggle by lazy {
+        ActionBarDrawerToggle(this@AnnouncementListsActivity,
+            binding.drawerLayout, binding.detailsActivityToolbar,
+            R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+    }
     private val categoryAdapter: CategoryAdapter by lazy {
         CategoryAdapter(object : ItemClickListenerCategory {
             override fun showDetailsCategory(category: Category) {
-                val intent = Intent(this@AnnouncementListsActivity, DetailsCategoryActivity::class.java)
+                val intent =
+                    Intent(this@AnnouncementListsActivity, DetailsCategoryActivity::class.java)
                 intent.putExtra(CATEGORY_KEY, category)
                 startActivity(intent)
             }
@@ -38,28 +57,48 @@ class AnnouncementListsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        Log.i("User", user.toString())
+
         categoryList = addAllCategory()
 
         categoryAdapter.categoryList = categoryList!!
 
+        hamburgerMenu()
+
         binding.apply {
+
             categoryRecViewMain.adapter = categoryAdapter
-            val slideModelList: ArrayList<SlideModel> = arrayListOf()
-            slideModelList.add(SlideModel(R.drawable.banner_watch, ScaleTypes.CENTER_INSIDE))
-            slideModelList.add(SlideModel(R.drawable.banner_ad, ScaleTypes.CENTER_INSIDE))
-            imageSliderMain.setImageList(slideModelList, ScaleTypes.CENTER_INSIDE)
+
+            imageSlider()
 
             floatingActionButtonMain.setOnClickListener {
                 transitionToItemAddActivity(ItemAddActivity())
             }
 
             constraintLayoutAllCategory.setOnClickListener {
-                transitionToItemAddActivity(AllCategoryActivity())
+                transitionToAllCategoryActivity(AllCategoryActivity())
             }
         }
     }
 
+    override fun onStart() {
+        val user = SharedPreference().getCurrentUser(this@AnnouncementListsActivity) as User
+        val userIcon = binding.navView.getHeaderView(0).findViewById<ImageView>(R.id.mainImageProfile)
+        if (user.userIcon == null) Picasso.get().load(R.drawable.person).into(userIcon)
+        else Picasso.get().load(user.userIcon!!.url).into(userIcon)
+        super.onStart()
+    }
+
     private fun transitionToItemAddActivity(activity: Activity) {
+        val intent = Intent(this@AnnouncementListsActivity, activity::class.java)
+        val bundle = Bundle()
+        intent.putExtra(USER, user)
+        bundle.putSerializable(ALL_CATEGORY_KEY, categoryList)
+        intent.putExtra(BUNDLE, bundle)
+        startActivity(intent)
+    }
+
+    private fun transitionToAllCategoryActivity(activity: Activity) {
         val intent = Intent(this@AnnouncementListsActivity, activity::class.java)
         val bundle = Bundle()
         bundle.putSerializable(ALL_CATEGORY_KEY, categoryList)
@@ -132,7 +171,7 @@ class AnnouncementListsActivity : AppCompatActivity() {
         categoryList.add(9, medicalProducts)
 
         // add category CHILDREN'S WORLD
-        val childrenWord = Category(idCategory = 10, categoryName = "CHILDRENS WORLD",
+        val childrenWord = Category(idCategory = 10, categoryName = "CHILDREN WORLD",
             categoryDescription = "Everything for children",
             categoryIcon = R.drawable.kids)
         categoryList.add(10, childrenWord)
@@ -144,5 +183,50 @@ class AnnouncementListsActivity : AppCompatActivity() {
         categoryList.add(11, giveForFree)
 
         return categoryList
+    }
+
+    private fun hamburgerMenu() = binding.apply {
+        navView.setNavigationItemSelectedListener(this@AnnouncementListsActivity)
+        drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
+
+        val username = navView.getHeaderView(0).findViewById<TextView>(R.id.textUsername)
+        username.text = user.username
+        val userEmail = navView.getHeaderView(0).findViewById<TextView>(R.id.textEmail)
+        userEmail.text = user.userEmail
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        navView.setNavigationItemSelectedListener { navViewItem ->
+            when (navViewItem.itemId) {
+                R.id.nav_account -> startActivity(Intent(this@AnnouncementListsActivity,
+                    ProfileActivity::class.java))
+                R.id.logOut -> {
+                    SharedPreference().loginOut(this@AnnouncementListsActivity)
+                    intentClearTask(SignActivity())
+                }
+            }
+            true
+        }
+    }
+
+    private fun imageSlider() {
+        val slideModelList: ArrayList<SlideModel> = arrayListOf()
+        slideModelList.add(SlideModel(R.drawable.banner_watch, ScaleTypes.CENTER_INSIDE))
+        slideModelList.add(SlideModel(R.drawable.banner_ad, ScaleTypes.CENTER_INSIDE))
+        binding.imageSliderMain.setImageList(slideModelList, ScaleTypes.CENTER_INSIDE)
+    }
+
+    override fun onBackPressed() {
+        binding.apply {
+            if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                drawerLayout.closeDrawer(GravityCompat.START)
+            } else super.onBackPressed()
+        }
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        if (toggle.onOptionsItemSelected(item)) return true
+        return super.onOptionsItemSelected(item)
     }
 }

@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.baktiyar11.bulletinboard.R
 import com.baktiyar11.bulletinboard.databinding.ItemProductsBinding
 import com.baktiyar11.bulletinboard.domain.models.category.childrenWord.ChildrenWord
+import com.squareup.picasso.Picasso
 
 class ChildrenWordAdapter(private val actionListener: ItemClickListenerChildrenWord) :
     RecyclerView.Adapter<ChildrenWordAdapter.ChildrenWordViewHolder>() {
@@ -34,8 +35,9 @@ class ChildrenWordAdapter(private val actionListener: ItemClickListenerChildrenW
         RecyclerView.ViewHolder(binding.root) {
         fun bind(childrenWord: ChildrenWord) {
             binding.apply {
-                productItemPrice.text = childrenWord.priceChildrenWord
-                productItemHeader.text = childrenWord.headerChildrenWord
+                productItemPrice.text = childrenWord.price
+                productItemHeader.text = childrenWord.header
+                Picasso.get().load(childrenWord.icon.url).into(goodImageItem)
             }
             itemView.setOnClickListener {
                 actionListener.showDetailsChildrenWord(childrenWord)

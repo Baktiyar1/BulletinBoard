@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.baktiyar11.bulletinboard.R
 import com.baktiyar11.bulletinboard.databinding.ItemProductsBinding
 import com.baktiyar11.bulletinboard.domain.models.category.animals.Animals
+import com.squareup.picasso.Picasso
 
 class AnimalsAdapter(private val actionListener: ItemClickListenerAnimals) :
     RecyclerView.Adapter<AnimalsAdapter.AnimalsViewHolder>() {
@@ -34,8 +35,9 @@ class AnimalsAdapter(private val actionListener: ItemClickListenerAnimals) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(animals: Animals) {
             binding.apply {
-                productItemPrice.text = animals.priceAnimals
-                productItemHeader.text = animals.headerAnimals
+                productItemPrice.text = animals.price
+                productItemHeader.text = animals.header
+                Picasso.get().load(animals.icon.url).into(goodImageItem)
             }
             itemView.setOnClickListener {
                 actionListener.showDetailsAnimals(animals)

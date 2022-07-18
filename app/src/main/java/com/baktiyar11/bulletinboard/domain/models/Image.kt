@@ -1,13 +1,10 @@
 package com.baktiyar11.bulletinboard.domain.models
 
-import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import kotlinx.parcelize.Parcelize
+import java.io.Serializable
 
-@Parcelize
 data class Image(
-    @SerializedName("__type")
-    var type: String = "File",
-    var name: String? = null,
+    @SerializedName("__type") var type: String = "File",
+    var name: String = "icon.png",
     var url: String? = null,
-) : Parcelable
+) : Serializable

@@ -1,18 +1,21 @@
 package com.baktiyar11.bulletinboard.domain.models.category.giveForFree
 
+import com.baktiyar11.bulletinboard.domain.models.Image
+import com.baktiyar11.bulletinboard.domain.models.category.Abstract
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 data class GiveForFree(
-    @SerializedName("objectId") val idGiveForFree: String,
-    @SerializedName("category") var categoryGiveForFree: String,
-    @SerializedName("header") var headerGiveForFree: String,
-    @SerializedName("description") var descriptionGiveForFree: String,
-    @SerializedName("price") var priceGiveForFree: String,
-    @SerializedName("currency") var currencyGiveForFree: String,
-    @SerializedName("region") var regionGiveForFree: String,
-    @SerializedName("city") var cityGiveForFree: String,
-    @SerializedName("userId") var userIdGiveForFree: String,
-    @SerializedName("userName") var userNameGiveForFree: String,
-    @SerializedName("userPhone") var userPhoneGiveForFree: String,
-) : Serializable
+    @SerializedName("objectId") val id: String,
+    @SerializedName("category") var category: String,
+    @SerializedName("header") var header: String,
+    @SerializedName("description") var description: String,
+    @SerializedName("price") var price: String,
+    @SerializedName("currency") var currency: String,
+    @SerializedName("region") var region: String,
+    @SerializedName("city") var city: String,
+    @SerializedName("userId") var userId: String,
+    @SerializedName("userName") var userName: String,
+    @SerializedName("userPhone") var userPhone: String,
+    @SerializedName("icon") var icon: Image
+) : Serializable, Abstract()

@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.baktiyar11.bulletinboard.R
 import com.baktiyar11.bulletinboard.databinding.ItemProductsBinding
 import com.baktiyar11.bulletinboard.domain.models.category.medicalProducts.MedicalProducts
+import com.squareup.picasso.Picasso
 
 class MedicalProductsAdapter(private val actionListener: ItemClickListenerMedicalProducts) :
     RecyclerView.Adapter<MedicalProductsAdapter.MedicalProductsViewHolder>() {
@@ -34,8 +35,9 @@ class MedicalProductsAdapter(private val actionListener: ItemClickListenerMedica
         RecyclerView.ViewHolder(binding.root) {
         fun bind(medicalProducts: MedicalProducts) {
             binding.apply {
-                productItemPrice.text = medicalProducts.priceMedicalProducts
-                productItemHeader.text = medicalProducts.headerMedicalProducts
+                productItemPrice.text = medicalProducts.price
+                productItemHeader.text = medicalProducts.header
+                Picasso.get().load(medicalProducts.icon.url).into(goodImageItem)
             }
             itemView.setOnClickListener {
                 actionListener.showDetailsMedicalProducts(medicalProducts)

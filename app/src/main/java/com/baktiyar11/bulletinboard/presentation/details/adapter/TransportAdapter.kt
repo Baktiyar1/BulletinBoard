@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.baktiyar11.bulletinboard.R
 import com.baktiyar11.bulletinboard.databinding.ItemProductsBinding
 import com.baktiyar11.bulletinboard.domain.models.category.transport.Transport
+import com.squareup.picasso.Picasso
 
 class TransportAdapter(private val actionListener: ItemClickListenerTransport)
     : RecyclerView.Adapter<TransportAdapter.TransportViewHolder>() {
@@ -34,8 +35,9 @@ class TransportAdapter(private val actionListener: ItemClickListenerTransport)
         RecyclerView.ViewHolder(binding.root) {
         fun bind(transport: Transport) {
             binding.apply {
-                productItemPrice.text = transport.transportPrice
-                productItemHeader.text = transport.transportHeader
+                productItemPrice.text = transport.price
+                productItemHeader.text = transport.header
+                Picasso.get().load(transport.icon.url).into(goodImageItem)
             }
             itemView.setOnClickListener {
                 actionListener.showDetailsTransport(transport)

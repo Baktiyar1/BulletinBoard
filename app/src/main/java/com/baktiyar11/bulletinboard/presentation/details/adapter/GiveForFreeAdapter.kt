@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.baktiyar11.bulletinboard.R
 import com.baktiyar11.bulletinboard.databinding.ItemProductsBinding
 import com.baktiyar11.bulletinboard.domain.models.category.giveForFree.GiveForFree
+import com.squareup.picasso.Picasso
 
 class GiveForFreeAdapter(private val actionListener: ItemClickListenerGiveForFree) :
     RecyclerView.Adapter<GiveForFreeAdapter.GiveForFreeViewHolder>() {
@@ -34,8 +35,9 @@ class GiveForFreeAdapter(private val actionListener: ItemClickListenerGiveForFre
         RecyclerView.ViewHolder(binding.root) {
         fun bind(giveForFree: GiveForFree) {
             binding.apply {
-                productItemPrice.text = giveForFree.priceGiveForFree
-                productItemHeader.text = giveForFree.headerGiveForFree
+                productItemPrice.text = giveForFree.price
+                productItemHeader.text = giveForFree.header
+                Picasso.get().load(giveForFree.icon.url).into(goodImageItem)
             }
             itemView.setOnClickListener {
                 actionListener.showDetailsGiveForFree(giveForFree)

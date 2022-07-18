@@ -1,19 +1,22 @@
 package com.baktiyar11.bulletinboard.domain.models.category.services
 
+import com.baktiyar11.bulletinboard.domain.models.Image
+import com.baktiyar11.bulletinboard.domain.models.category.Abstract
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 data class Services(
-    @SerializedName("objectId") val idServices: String,
-    @SerializedName("category") var categoryServices: String,
-    @SerializedName("subCategory") var subCategoryServices: String,
-    @SerializedName("header") var headerServices: String,
-    @SerializedName("description") var descriptionServices: String,
-    @SerializedName("price") var priceServices: String,
-    @SerializedName("currency") var currencyServices: String,
-    @SerializedName("region") var regionServices: String,
-    @SerializedName("city") var cityServices: String,
-    @SerializedName("userId") var userIdServices: String,
-    @SerializedName("userName") var userNameServices: String,
-    @SerializedName("userPhone") var userPhoneServices: String,
-) : Serializable
+    @SerializedName("objectId") val id: String,
+    @SerializedName("category") var category: String,
+    @SerializedName("subCategory") var subcategory: String,
+    @SerializedName("header") var header: String,
+    @SerializedName("description") var description: String,
+    @SerializedName("price") var price: String,
+    @SerializedName("currency") var currency: String,
+    @SerializedName("region") var region: String,
+    @SerializedName("city") var city: String,
+    @SerializedName("userId") var userId: String,
+    @SerializedName("userName") var userName: String,
+    @SerializedName("userPhone") var userPhone: String,
+    @SerializedName("icon") var icon: Image
+) : Serializable, Abstract()

@@ -1,7 +1,12 @@
 package com.baktiyar11.bulletinboard.presentation.item_add.ui.activity
 
+import android.app.Activity
 import android.content.Intent
+import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import androidx.appcompat.app.AppCompatActivity
@@ -15,11 +20,13 @@ import com.baktiyar11.bulletinboard.domain.models.category.transport.CarTypeMode
 import com.baktiyar11.bulletinboard.domain.models.category.transport.TransportModel
 import com.baktiyar11.bulletinboard.domain.models.login.User
 import com.baktiyar11.bulletinboard.presentation.item_add.adapter.*
-import com.baktiyar11.bulletinboard.presentation.main.ui.AnnouncementListsActivity
-import com.baktiyar11.bulletinboard.utils.ALL_CATEGORY_KEY
-import com.baktiyar11.bulletinboard.utils.BUNDLE
-import com.baktiyar11.bulletinboard.utils.toast
+import com.baktiyar11.bulletinboard.presentation.main.ui.activity.AnnouncementListsActivity
+import com.baktiyar11.bulletinboard.utils.*
+import com.parse.ParseFile
 import com.parse.ParseObject
+import com.parse.SaveCallback
+import java.io.ByteArrayOutputStream
+import java.io.IOException
 
 class ItemAddActivity : AppCompatActivity(), CategoryItemOnClickListener,
     TransportItemOnClickListener, CarTypeModelSpinnerOnClickListener, OtherSpinnerOnClickListener,
@@ -41,9 +48,16 @@ class ItemAddActivity : AppCompatActivity(), CategoryItemOnClickListener,
             transport_models = transportModelList, this@ItemAddActivity
         )
     }
+    private val carTypeModelSpinnerAdapter: CarTypeModelSpinnerAdapter by lazy {
+        CarTypeModelSpinnerAdapter(context = this@ItemAddActivity,
+            item_other_spinner = R.layout.item_other_spinner,
+            array_name = R.array.model_acura_name,
+            names = typeModelTransportCategories, actionListener = this@ItemAddActivity)
+    }
     private var categoryList: ArrayList<Category> = arrayListOf()
     private var transportModelList = arrayListOf<TransportModel>()
-    private val subCategories = arrayListOf<SubCategory>()
+    private var subCategories = arrayListOf<SubCategory>()
+    private val subCategoryList = arrayListOf<SubCategory>()
     private val typeModelTransportCategories = arrayListOf<CarTypeModel>()
     private val yearTransportCategories = arrayListOf<String>()
     private val fuelTransportCategories = arrayListOf<String>()
@@ -73,6 +87,12 @@ class ItemAddActivity : AppCompatActivity(), CategoryItemOnClickListener,
     private var currency: String? = null
     private var region: Region? = null
     private var city: City? = null
+    private var imageUri: Uri? = null
+    private var bitmap: Bitmap? = null
+    private var message: String? = null
+    private val user: User by lazy {
+        intent!!.extras!!.getSerializable(USER) as User
+    }
     private var negotiableExamination: Boolean = true
     private var myNumberExamination: Boolean = true
 
@@ -88,13 +108,13 @@ class ItemAddActivity : AppCompatActivity(), CategoryItemOnClickListener,
 
         getAllList()
 
-        binding.apply {
-            closeImage.setOnClickListener {
-                startActivity(Intent(this@ItemAddActivity,
-                    AnnouncementListsActivity::class.java))
-            }
+        giveAdapters()
 
-            giveAdapters()
+        binding.apply {
+
+            phoneNumberTextView.text = user.userPhone
+
+            closeImage.setOnClickListener { intentClearTask(AnnouncementListsActivity()) }
 
             negotiableSwitch.setOnClickListener {
                 if (negotiableSwitch.isChecked) {
@@ -120,566 +140,191 @@ class ItemAddActivity : AppCompatActivity(), CategoryItemOnClickListener,
                 }
             }
 
+            imageButton.setOnClickListener { openGallery() }
+
             addBtn.setOnClickListener {
                 save()
             }
         }
     }
 
-    private fun save() {
-        binding.apply {
-            if (price.text!!.isNotEmpty() && phoneNumberEditText.text.isNotEmpty()) {
-                val userObject = ParseObject("User")
-                val user = User()
-                user.userId = userObject.getString("objectId")
-                user.username = userObject.getString("username")
-                user.userPassword = userObject.getString("password")
-                user.userEmail = userObject.getString("email")
-                user.userPhone = userObject.getString("phone")
+    private fun save() = binding.apply {
+        try {
+            if (headerMain.text!!.isNotEmpty() && descMain.text!!.isNotEmpty()
+                && imageUri!!.toString().isNotEmpty()
+            ) {
                 when (category?.categoryName) {
-                    "TRANSPORT" -> saveTransport(user)
-                    "REAL ESTATE" -> saveRealEstate(user)
-                    "TAXI" -> saveTaxi(user)
-                    "ELECTRONICS" -> saveElectronics(user)
-                    "SERVICES" -> saveServices(user)
-                    "WORK" -> saveWork(user)
-                    "PERSONAL ITEMS" -> savePersonalItems(user)
-                    "ANIMALS" -> saveAnimals(user)
-                    "SPORT AND HOBBIES" -> saveSportAndHobbies(user)
-                    "MEDICAL PRODUCTS" -> saveMedicalProducts(user)
-                    "CHILDREN WORLD" -> saveChildrenIsWord(user)
-                    "GIVE FOR FREE" -> saveGiveForFree(user)
+                    "TRANSPORT" -> {
+                        val parseObject = ParseObject("Transport")
+                        message = "Transport is saved!"
+                        checkNullAll(parseObject)
+                    }
+                    "REAL ESTATE" -> {
+                        val parseObject = ParseObject("RealEstate")
+                        message = "Real estate is saved!"
+                        checkNullAll(parseObject)
+                    }
+                    "TAXI" -> {
+                        val parseObject = ParseObject("Taxi")
+                        message = "Taxi is saved!"
+                        checkNullAll(parseObject)
+                    }
+                    "ELECTRONICS" -> {
+                        val parseObject = ParseObject("Electronics")
+                        message = "Electronic is saved!"
+                        checkNullAll(parseObject)
+                    }
+                    "SERVICES" -> {
+                        val parseObject = ParseObject("Services")
+                        message = "Service is saved!"
+                        checkNullAll(parseObject)
+                    }
+                    "WORK" -> {
+                        val parseObject = ParseObject("Work")
+                        message = "Work is saved!"
+                        checkNullAll(parseObject)
+                    }
+                    "PERSONAL ITEMS" -> {
+                        val parseObject = ParseObject("PersonalItems")
+                        message = "Personal item is saved!"
+                        checkNullAll(parseObject)
+                    }
+                    "ANIMALS" -> {
+                        val parseObject = ParseObject("Animals")
+                        message = "Animal is saved!"
+                        checkNullAll(parseObject)
+                    }
+                    "SPORT AND HOBBIES" -> {
+                        val parseObject = ParseObject("SportAndHobbies")
+                        message = "Sport and hobby is saved!"
+                        checkNullAll(parseObject)
+                    }
+                    "MEDICAL PRODUCTS" -> {
+                        val parseObject = ParseObject("MedicalProducts")
+                        message = "Medical product is saved!"
+                        checkNullAll(parseObject)
+                    }
+                    "CHILDREN WORLD" -> {
+                        val parseObject = ParseObject("ChildrenWorld")
+                        message = "Children world is saved!"
+                        checkNullAll(parseObject)
+                    }
+                    "GIVE FOR FREE" -> {
+                        val parseObject = ParseObject("GiveForFree")
+                        message = "Give for free is saved!"
+                        checkNullAll(parseObject)
+                    }
                     else -> toast("Error! Try again later")
                 }
             } else toast("Fill in all the fields!")
+        } catch (e: NullPointerException) {
+            toast("Fill in all the fields!")
         }
     }
 
-    private fun saveTransport(user: User) {
-        binding.apply {
-            val transportObject = ParseObject("Transport")
-            transportObject.put("category", category!!.categoryName)
-            transportObject.put("subCategory", subCategory!!.title)
-            if (subCategory!!.title == "PASSENGER CAR") {
-                transportObject.put("model", carTypeModel!!.title)
-                transportObject.put("brand", transportModel!!.transportModelName)
-                transportObject.put("year", year)
-                transportObject.put("bodyType", bodyType)
-                transportObject.put("fuelType", fuel)
-                transportObject.put("color", carColor)
-                transportObject.put("RRCType", cpp)
-                transportObject.put("steeringWheel", steeringWheel)
-                transportObject.put("condition", condition)
-                transportObject.put("engineCapacity", engineCapacity)
-            }
-            transportObject.put("header", headerMain.text.toString())
-            transportObject.put("description", descMain.text.toString())
-            transportObject.put("region", region!!.title)
-            transportObject.put("city", city!!.title)
-            transportObject.put("userId", user.userId.toString())
-            transportObject.put("userName", user.username.toString())
-            if (negotiableExamination && myNumberExamination) {
-                if (headerMain.text!!.isNotEmpty() && descMain.text!!.isNotEmpty()) {
-                    transportObject.put("userPhone", phoneNumberEditText.text.toString())
-                    transportObject.put("price", price.text.toString())
-                    transportObject.put("currency", currency)
-                } else toast("Fill in all the fields!")
-            } else if (!negotiableExamination && myNumberExamination) {
-                if (descMain.text!!.isNotEmpty()) {
-                    transportObject.put("userPhone", phoneNumberEditText.text.toString())
-                    transportObject.put("price", "Negotiable")
-                    transportObject.put("currency", "Negotiable")
-                } else toast("Fill in all the fields!")
-            } else if (negotiableExamination && !myNumberExamination) {
-                if (headerMain.text!!.isNotEmpty()) {
-                    transportObject.put("userPhone", user.userPhone.toString())
-                    transportObject.put("price", price.text.toString())
-                    transportObject.put("currency", currency)
-                } else toast("Fill in all the fields!")
-            } else {
-                transportObject.put("userPhone", user.userPhone.toString())
-                transportObject.put("price", "Negotiable")
-                transportObject.put("currency", "Negotiable")
-            }
-
-            transportObject.saveInBackground { e ->
-                if (e == null) toast("Post is saved!")
-                else toast(e.message.toString())
-                startActivity(Intent(this@ItemAddActivity, AnnouncementListsActivity::class.java))
-            }
+    private fun checkNullAll(parseObject: ParseObject) = binding.apply {
+        if (negotiableExamination && myNumberExamination) {
+            if (price.text!!.isNotEmpty() && phoneNumberEditText.text!!.isNotEmpty()) {
+                addBtn.isClickable = false
+                parseObject.put("userPhone", phoneNumberEditText.text.toString())
+                parseObject.put("price", price.text.toString())
+                parseObject.put("currency", currency)
+                saveAll(parseObject)
+            } else toast("Fill in all the fields!")
+        } else if (!negotiableExamination && myNumberExamination) {
+            if (phoneNumberEditText.text!!.isNotEmpty()) {
+                addBtn.isClickable = false
+                parseObject.put("userPhone", phoneNumberEditText.text.toString())
+                parseObject.put("price", "Negotiable")
+                parseObject.put("currency", "Negotiable")
+                saveAll(parseObject)
+            } else toast("Fill in all the fields!")
+        } else if (negotiableExamination && !myNumberExamination) {
+            if (price.text!!.isNotEmpty()) {
+                addBtn.isClickable = false
+                parseObject.put("userPhone", user.userPhone.toString())
+                parseObject.put("price", price.text.toString())
+                parseObject.put("currency", currency)
+                saveAll(parseObject)
+            } else toast("Fill in all the fields!")
+        } else {
+            addBtn.isClickable = false
+            parseObject.put("userPhone", user.userPhone.toString())
+            parseObject.put("price", "Negotiable")
+            parseObject.put("currency", "Negotiable")
+            saveAll(parseObject)
         }
     }
 
-    private fun saveRealEstate(user: User) {
-        binding.apply {
-            val realEstateObject = ParseObject("RealEstate")
-            realEstateObject.put("category", category!!.categoryName)
-            realEstateObject.put("subCategory", subCategory!!.title)
-            realEstateObject.put("header", headerMain.text.toString())
-            realEstateObject.put("description", descMain.text.toString())
-            realEstateObject.put("region", region!!.title)
-            realEstateObject.put("city", city!!.title)
-            realEstateObject.put("userId", user.userId.toString())
-            realEstateObject.put("userName", user.username.toString())
-            if (negotiableExamination && myNumberExamination) {
-                if (headerMain.text!!.isNotEmpty() && descMain.text!!.isNotEmpty()) {
-                    realEstateObject.put("userPhone", phoneNumberEditText.text.toString())
-                    realEstateObject.put("price", price.text.toString())
-                    realEstateObject.put("currency", currency)
-                } else toast("Fill in all the fields!")
-            } else if (!negotiableExamination && myNumberExamination) {
-                if (descMain.text!!.isNotEmpty()) {
-                    realEstateObject.put("userPhone", phoneNumberEditText.text.toString())
-                    realEstateObject.put("price", "Negotiable")
-                    realEstateObject.put("currency", "Negotiable")
-                } else toast("Fill in all the fields!")
-            } else if (negotiableExamination && !myNumberExamination) {
-                if (headerMain.text!!.isNotEmpty()) {
-                    realEstateObject.put("userPhone", user.userPhone.toString())
-                    realEstateObject.put("price", price.text.toString())
-                    realEstateObject.put("currency", currency)
-                } else toast("Fill in all the fields!")
-            } else {
-                realEstateObject.put("userPhone", user.userPhone.toString())
-                realEstateObject.put("price", "Negotiable")
-                realEstateObject.put("currency", "Negotiable")
-            }
+    private fun saveAll(parseObject: ParseObject) = binding.apply {
+        parseObject.put("category", category!!.categoryName)
+        parseObject.put("header", headerMain.text.toString())
+        parseObject.put("description", descMain.text.toString())
+        saveIcon(parseObject)
+        parseObject.put("region", region!!.title)
+        parseObject.put("city", city!!.title)
+        parseObject.put("userId", user.objectId.toString())
+        parseObject.put("userName", user.username.toString())
 
-            realEstateObject.saveInBackground { e ->
-                if (e == null) toast("Post is saved!")
-                else toast(e.message.toString())
-                startActivity(Intent(this@ItemAddActivity, AnnouncementListsActivity::class.java))
+        if (category!!.categoryName != "GIVE FOR FREE") {
+            parseObject.put("subCategory", subCategory!!.title)
+            Log.i(USER, subCategory!!.title)
+            if (category!!.categoryName == "TRANSPORT") {
+                if (subCategory!!.title == "PASSENGER CAR") {
+                    parseObject.put("model", carTypeModel!!.title)
+                    parseObject.put("brand", transportModel!!.transportModelName)
+                    parseObject.put("year", year)
+                    parseObject.put("bodyType", bodyType)
+                    parseObject.put("driverUnit", driveUnit)
+                    parseObject.put("fuelType", fuel)
+                    parseObject.put("color", carColor)
+                    parseObject.put("RRCType", cpp)
+                    parseObject.put("steeringWheel", steeringWheel)
+                    parseObject.put("condition", condition)
+                    parseObject.put("engineCapacity", engineCapacity)
+                } else {
+                    parseObject.put("model", subCategory!!.title)
+                    parseObject.put("brand", subCategory!!.title)
+                    parseObject.put("year", subCategory!!.title)
+                    parseObject.put("bodyType", subCategory!!.title)
+                    parseObject.put("driverUnit", subCategory!!.title)
+                    parseObject.put("fuelType", subCategory!!.title)
+                    parseObject.put("color", subCategory!!.title)
+                    parseObject.put("RRCType", subCategory!!.title)
+                    parseObject.put("steeringWheel", subCategory!!.title)
+                    parseObject.put("condition", subCategory!!.title)
+                    parseObject.put("engineCapacity", subCategory!!.title)
+                }
+            }
+        }
+
+        parseObject.saveInBackground { e ->
+            if (e == null) {
+                toast(message!!.toString())
+                intentClearTask(AnnouncementListsActivity())
+            } else {
+                toast(e.message.toString())
+                addBtn.isClickable = true
             }
         }
     }
 
-    private fun saveTaxi(user: User) {
-        binding.apply {
-            val taxiObject = ParseObject("Taxi")
-            taxiObject.put("category", category!!.categoryName)
-            taxiObject.put("subCategory", subCategory!!.title)
-            taxiObject.put("header", headerMain.text.toString())
-            taxiObject.put("description", descMain.text.toString())
-            taxiObject.put("region", region!!.title)
-            taxiObject.put("city", city!!.title)
-            taxiObject.put("userId", user.userId.toString())
-            taxiObject.put("userName", user.username.toString())
-            if (negotiableExamination && myNumberExamination) {
-                if (headerMain.text!!.isNotEmpty() && descMain.text!!.isNotEmpty()) {
-                    taxiObject.put("userPhone", phoneNumberEditText.text.toString())
-                    taxiObject.put("price", price.text.toString())
-                    taxiObject.put("currency", currency)
-                } else toast("Fill in all the fields!")
-            } else if (!negotiableExamination && myNumberExamination) {
-                if (descMain.text!!.isNotEmpty()) {
-                    taxiObject.put("userPhone", phoneNumberEditText.text.toString())
-                    taxiObject.put("price", "Negotiable")
-                    taxiObject.put("currency", "Negotiable")
-                } else toast("Fill in all the fields!")
-            } else if (negotiableExamination && !myNumberExamination) {
-                if (headerMain.text!!.isNotEmpty()) {
-                    taxiObject.put("userPhone", user.userPhone.toString())
-                    taxiObject.put("price", price.text.toString())
-                    taxiObject.put("currency", currency)
-                } else toast("Fill in all the fields!")
-            } else {
-                taxiObject.put("userPhone", user.userPhone.toString())
-                taxiObject.put("price", "Negotiable")
-                taxiObject.put("currency", "Negotiable")
-            }
-
-            taxiObject.saveInBackground { e ->
-                if (e == null) toast("Post is saved!")
-                else toast(e.message.toString())
-                startActivity(Intent(this@ItemAddActivity, AnnouncementListsActivity::class.java))
-            }
-        }
+    private fun saveIcon(parseObject: ParseObject) {
+        val stream = ByteArrayOutputStream()
+        bitmap?.compress(Bitmap.CompressFormat.PNG, 100, stream)
+        val parseFile = ParseFile("icon.png", stream.toByteArray())
+        parseFile.saveInBackground(SaveCallback { e ->
+            if (e == null) toast("Image is saved!")
+            else toast("Failed to save image!")
+        })
+        parseObject.put("icon", parseFile)
     }
 
-    private fun saveElectronics(user: User) {
-        binding.apply {
-            val electronicsObject = ParseObject("Electronics")
-            electronicsObject.put("category", category!!.categoryName)
-            electronicsObject.put("subCategory", subCategory!!.title)
-            electronicsObject.put("header", headerMain.text.toString())
-            electronicsObject.put("description", descMain.text.toString())
-            electronicsObject.put("region", region!!.title)
-            electronicsObject.put("city", city!!.title)
-            electronicsObject.put("userId", user.userId.toString())
-            electronicsObject.put("userName", user.username.toString())
-            if (negotiableExamination && myNumberExamination) {
-                if (headerMain.text!!.isNotEmpty() && descMain.text!!.isNotEmpty()) {
-                    electronicsObject.put("userPhone", phoneNumberEditText.text.toString())
-                    electronicsObject.put("price", price.text.toString())
-                    electronicsObject.put("currency", currency)
-                } else toast("Fill in all the fields!")
-            } else if (!negotiableExamination && myNumberExamination) {
-                if (descMain.text!!.isNotEmpty()) {
-                    electronicsObject.put("userPhone", phoneNumberEditText.text.toString())
-                    electronicsObject.put("price", "Negotiable")
-                    electronicsObject.put("currency", "Negotiable")
-                } else toast("Fill in all the fields!")
-            } else if (negotiableExamination && !myNumberExamination) {
-                if (headerMain.text!!.isNotEmpty()) {
-                    electronicsObject.put("userPhone", user.userPhone.toString())
-                    electronicsObject.put("price", price.text.toString())
-                    electronicsObject.put("currency", currency)
-                } else toast("Fill in all the fields!")
-            } else {
-                electronicsObject.put("userPhone", user.userPhone.toString())
-                electronicsObject.put("price", "Negotiable")
-                electronicsObject.put("currency", "Negotiable")
-            }
-
-            electronicsObject.saveInBackground { e ->
-                if (e == null) toast("Post is saved!")
-                else toast(e.message.toString())
-                startActivity(Intent(this@ItemAddActivity, AnnouncementListsActivity::class.java))
-            }
-        }
-    }
-
-    private fun saveServices(user: User) {
-        binding.apply {
-            val servicesObject = ParseObject("Services")
-            servicesObject.put("category", category!!.categoryName)
-            servicesObject.put("subCategory", subCategory!!.title)
-            servicesObject.put("header", headerMain.text.toString())
-            servicesObject.put("description", descMain.text.toString())
-            servicesObject.put("region", region!!.title)
-            servicesObject.put("city", city!!.title)
-            servicesObject.put("userId", user.userId.toString())
-            servicesObject.put("userName", user.username.toString())
-            if (negotiableExamination && myNumberExamination) {
-                if (headerMain.text!!.isNotEmpty() && descMain.text!!.isNotEmpty()) {
-                    servicesObject.put("userPhone", phoneNumberEditText.text.toString())
-                    servicesObject.put("price", price.text.toString())
-                    servicesObject.put("currency", currency)
-                } else toast("Fill in all the fields!")
-            } else if (!negotiableExamination && myNumberExamination) {
-                if (descMain.text!!.isNotEmpty()) {
-                    servicesObject.put("userPhone", phoneNumberEditText.text.toString())
-                    servicesObject.put("price", "Negotiable")
-                    servicesObject.put("currency", "Negotiable")
-                } else toast("Fill in all the fields!")
-            } else if (negotiableExamination && !myNumberExamination) {
-                if (headerMain.text!!.isNotEmpty()) {
-                    servicesObject.put("userPhone", user.userPhone.toString())
-                    servicesObject.put("price", price.text.toString())
-                    servicesObject.put("currency", currency)
-                } else toast("Fill in all the fields!")
-            } else {
-                servicesObject.put("userPhone", user.userPhone.toString())
-                servicesObject.put("price", "Negotiable")
-                servicesObject.put("currency", "Negotiable")
-            }
-
-            servicesObject.saveInBackground { e ->
-                if (e == null) toast("Post is saved!")
-                else toast(e.message.toString())
-                startActivity(Intent(this@ItemAddActivity, AnnouncementListsActivity::class.java))
-            }
-        }
-    }
-
-    private fun saveWork(user: User) {
-        binding.apply {
-            val workObject = ParseObject("Work")
-            workObject.put("category", category!!.categoryName)
-            workObject.put("subCategory", subCategory!!.title)
-            workObject.put("header", headerMain.text.toString())
-            workObject.put("description", descMain.text.toString())
-            workObject.put("region", region!!.title)
-            workObject.put("city", city!!.title)
-            workObject.put("userId", user.userId.toString())
-            workObject.put("userName", user.username.toString())
-            if (negotiableExamination && myNumberExamination) {
-                if (headerMain.text!!.isNotEmpty() && descMain.text!!.isNotEmpty()) {
-                    workObject.put("userPhone", phoneNumberEditText.text.toString())
-                    workObject.put("price", price.text.toString())
-                    workObject.put("currency", currency)
-                } else toast("Fill in all the fields!")
-            } else if (!negotiableExamination && myNumberExamination) {
-                if (descMain.text!!.isNotEmpty()) {
-                    workObject.put("userPhone", phoneNumberEditText.text.toString())
-                    workObject.put("price", "Negotiable")
-                    workObject.put("currency", "Negotiable")
-                } else toast("Fill in all the fields!")
-            } else if (negotiableExamination && !myNumberExamination) {
-                if (headerMain.text!!.isNotEmpty()) {
-                    workObject.put("userPhone", user.userPhone.toString())
-                    workObject.put("price", price.text.toString())
-                    workObject.put("currency", currency)
-                } else toast("Fill in all the fields!")
-            } else {
-                workObject.put("userPhone", user.userPhone.toString())
-                workObject.put("price", "Negotiable")
-                workObject.put("currency", "Negotiable")
-            }
-
-            workObject.saveInBackground { e ->
-                if (e == null) toast("Post is saved!")
-                else toast(e.message.toString())
-                startActivity(Intent(this@ItemAddActivity, AnnouncementListsActivity::class.java))
-            }
-        }
-    }
-
-    private fun savePersonalItems(user: User) {
-        binding.apply {
-            val personalItemsObject = ParseObject("PersonalItems")
-            personalItemsObject.put("category", category!!.categoryName)
-            personalItemsObject.put("subCategory", subCategory!!.title)
-            personalItemsObject.put("header", headerMain.text.toString())
-            personalItemsObject.put("description", descMain.text.toString())
-            personalItemsObject.put("region", region!!.title)
-            personalItemsObject.put("city", city!!.title)
-            personalItemsObject.put("userId", user.userId.toString())
-            personalItemsObject.put("userName", user.username.toString())
-            if (negotiableExamination && myNumberExamination) {
-                if (headerMain.text!!.isNotEmpty() && descMain.text!!.isNotEmpty()) {
-                    personalItemsObject.put("userPhone", phoneNumberEditText.text.toString())
-                    personalItemsObject.put("price", price.text.toString())
-                    personalItemsObject.put("currency", currency)
-                } else toast("Fill in all the fields!")
-            } else if (!negotiableExamination && myNumberExamination) {
-                if (descMain.text!!.isNotEmpty()) {
-                    personalItemsObject.put("userPhone", phoneNumberEditText.text.toString())
-                    personalItemsObject.put("price", "Negotiable")
-                    personalItemsObject.put("currency", "Negotiable")
-                } else toast("Fill in all the fields!")
-            } else if (negotiableExamination && !myNumberExamination) {
-                if (headerMain.text!!.isNotEmpty()) {
-                    personalItemsObject.put("userPhone", user.userPhone.toString())
-                    personalItemsObject.put("price", price.text.toString())
-                    personalItemsObject.put("currency", currency)
-                } else toast("Fill in all the fields!")
-            } else {
-                personalItemsObject.put("userPhone", user.userPhone.toString())
-                personalItemsObject.put("price", "Negotiable")
-                personalItemsObject.put("currency", "Negotiable")
-            }
-
-            personalItemsObject.saveInBackground { e ->
-                if (e == null) toast("Post is saved!")
-                else toast(e.message.toString())
-                startActivity(Intent(this@ItemAddActivity, AnnouncementListsActivity::class.java))
-            }
-        }
-    }
-
-    private fun saveAnimals(user: User) {
-        binding.apply {
-            val animalsObject = ParseObject("Animals")
-            animalsObject.put("category", category!!.categoryName)
-            animalsObject.put("subCategory", subCategory!!.title)
-            animalsObject.put("header", headerMain.text.toString())
-            animalsObject.put("description", descMain.text.toString())
-            animalsObject.put("region", region!!.title)
-            animalsObject.put("city", city!!.title)
-            animalsObject.put("userId", user.userId.toString())
-            animalsObject.put("userName", user.username.toString())
-            if (negotiableExamination && myNumberExamination) {
-                if (headerMain.text!!.isNotEmpty() && descMain.text!!.isNotEmpty()) {
-                    animalsObject.put("userPhone", phoneNumberEditText.text.toString())
-                    animalsObject.put("price", price.text.toString())
-                    animalsObject.put("currency", currency)
-                } else toast("Fill in all the fields!")
-            } else if (!negotiableExamination && myNumberExamination) {
-                if (descMain.text!!.isNotEmpty()) {
-                    animalsObject.put("userPhone", phoneNumberEditText.text.toString())
-                    animalsObject.put("price", "Negotiable")
-                    animalsObject.put("currency", "Negotiable")
-                } else toast("Fill in all the fields!")
-            } else if (negotiableExamination && !myNumberExamination) {
-                if (headerMain.text!!.isNotEmpty()) {
-                    animalsObject.put("userPhone", user.userPhone.toString())
-                    animalsObject.put("price", price.text.toString())
-                    animalsObject.put("currency", currency)
-                } else toast("Fill in all the fields!")
-            } else {
-                animalsObject.put("userPhone", user.userPhone.toString())
-                animalsObject.put("price", "Negotiable")
-                animalsObject.put("currency", "Negotiable")
-            }
-
-            animalsObject.saveInBackground { e ->
-                if (e == null) toast("Post is saved!")
-                else toast(e.message.toString())
-                startActivity(Intent(this@ItemAddActivity, AnnouncementListsActivity::class.java))
-            }
-        }
-    }
-
-    private fun saveSportAndHobbies(user: User) {
-        binding.apply {
-            val sportAndHobbiesObject = ParseObject("SportAndHobbies")
-            sportAndHobbiesObject.put("category", category!!.categoryName)
-            sportAndHobbiesObject.put("subCategory", subCategory!!.title)
-            sportAndHobbiesObject.put("header", headerMain.text.toString())
-            sportAndHobbiesObject.put("description", descMain.text.toString())
-            sportAndHobbiesObject.put("region", region!!.title)
-            sportAndHobbiesObject.put("city", city!!.title)
-            sportAndHobbiesObject.put("userId", user.userId.toString())
-            sportAndHobbiesObject.put("userName", user.username.toString())
-            if (negotiableExamination && myNumberExamination) {
-                if (headerMain.text!!.isNotEmpty() && descMain.text!!.isNotEmpty()) {
-                    sportAndHobbiesObject.put("userPhone", phoneNumberEditText.text.toString())
-                    sportAndHobbiesObject.put("price", price.text.toString())
-                    sportAndHobbiesObject.put("currency", currency)
-                } else toast("Fill in all the fields!")
-            } else if (!negotiableExamination && myNumberExamination) {
-                if (descMain.text!!.isNotEmpty()) {
-                    sportAndHobbiesObject.put("userPhone", phoneNumberEditText.text.toString())
-                    sportAndHobbiesObject.put("price", "Negotiable")
-                    sportAndHobbiesObject.put("currency", "Negotiable")
-                } else toast("Fill in all the fields!")
-            } else if (negotiableExamination && !myNumberExamination) {
-                if (headerMain.text!!.isNotEmpty()) {
-                    sportAndHobbiesObject.put("userPhone", user.userPhone.toString())
-                    sportAndHobbiesObject.put("price", price.text.toString())
-                    sportAndHobbiesObject.put("currency", currency)
-                } else toast("Fill in all the fields!")
-            } else {
-                sportAndHobbiesObject.put("userPhone", user.userPhone.toString())
-                sportAndHobbiesObject.put("price", "Negotiable")
-                sportAndHobbiesObject.put("currency", "Negotiable")
-            }
-
-            sportAndHobbiesObject.saveInBackground { e ->
-                if (e == null) toast("Post is saved!")
-                else toast(e.message.toString())
-                startActivity(Intent(this@ItemAddActivity, AnnouncementListsActivity::class.java))
-            }
-        }
-    }
-
-    private fun saveMedicalProducts(user: User) {
-        binding.apply {
-            val medicalProductsObject = ParseObject("MedicalProducts")
-            medicalProductsObject.put("category", category!!.categoryName)
-            medicalProductsObject.put("subCategory", subCategory!!.title)
-            medicalProductsObject.put("header", headerMain.text.toString())
-            medicalProductsObject.put("description", descMain.text.toString())
-            medicalProductsObject.put("region", region!!.title)
-            medicalProductsObject.put("city", city!!.title)
-            medicalProductsObject.put("userId", user.userId.toString())
-            medicalProductsObject.put("userName", user.username.toString())
-            if (negotiableExamination && myNumberExamination) {
-                if (headerMain.text!!.isNotEmpty() && descMain.text!!.isNotEmpty()) {
-                    medicalProductsObject.put("userPhone", phoneNumberEditText.text.toString())
-                    medicalProductsObject.put("price", price.text.toString())
-                    medicalProductsObject.put("currency", currency)
-                } else toast("Fill in all the fields!")
-            } else if (!negotiableExamination && myNumberExamination) {
-                if (descMain.text!!.isNotEmpty()) {
-                    medicalProductsObject.put("userPhone", phoneNumberEditText.text.toString())
-                    medicalProductsObject.put("price", "Negotiable")
-                    medicalProductsObject.put("currency", "Negotiable")
-                } else toast("Fill in all the fields!")
-            } else if (negotiableExamination && !myNumberExamination) {
-                if (headerMain.text!!.isNotEmpty()) {
-                    medicalProductsObject.put("userPhone", user.userPhone.toString())
-                    medicalProductsObject.put("price", price.text.toString())
-                    medicalProductsObject.put("currency", currency)
-                } else toast("Fill in all the fields!")
-            } else {
-                medicalProductsObject.put("userPhone", user.userPhone.toString())
-                medicalProductsObject.put("price", "Negotiable")
-                medicalProductsObject.put("currency", "Negotiable")
-            }
-
-            medicalProductsObject.saveInBackground { e ->
-                if (e == null) toast("Post is saved!")
-                else toast(e.message.toString())
-                startActivity(Intent(this@ItemAddActivity, AnnouncementListsActivity::class.java))
-            }
-        }
-    }
-
-    private fun saveChildrenIsWord(user: User) {
-        binding.apply {
-            val childrenIsWorkObject = ParseObject("ChildrenWord")
-            childrenIsWorkObject.put("category", category!!.categoryName)
-            childrenIsWorkObject.put("subCategory", subCategory!!.title)
-            childrenIsWorkObject.put("header", headerMain.text.toString())
-            childrenIsWorkObject.put("description", descMain.text.toString())
-            childrenIsWorkObject.put("region", region!!.title)
-            childrenIsWorkObject.put("city", city!!.title)
-            childrenIsWorkObject.put("userId", user.userId.toString())
-            childrenIsWorkObject.put("userName", user.username.toString())
-            if (negotiableExamination && myNumberExamination) {
-                if (headerMain.text!!.isNotEmpty() && descMain.text!!.isNotEmpty()) {
-                    childrenIsWorkObject.put("userPhone", phoneNumberEditText.text.toString())
-                    childrenIsWorkObject.put("price", price.text.toString())
-                    childrenIsWorkObject.put("currency", currency)
-                } else toast("Fill in all the fields!")
-            } else if (!negotiableExamination && myNumberExamination) {
-                if (descMain.text!!.isNotEmpty()) {
-                    childrenIsWorkObject.put("userPhone", phoneNumberEditText.text.toString())
-                    childrenIsWorkObject.put("price", "Negotiable")
-                    childrenIsWorkObject.put("currency", "Negotiable")
-                } else toast("Fill in all the fields!")
-            } else if (negotiableExamination && !myNumberExamination) {
-                if (headerMain.text!!.isNotEmpty()) {
-                    childrenIsWorkObject.put("userPhone", user.userPhone.toString())
-                    childrenIsWorkObject.put("price", price.text.toString())
-                    childrenIsWorkObject.put("currency", currency)
-                } else toast("Fill in all the fields!")
-            } else {
-                childrenIsWorkObject.put("userPhone", user.userPhone.toString())
-                childrenIsWorkObject.put("price", "Negotiable")
-                childrenIsWorkObject.put("currency", "Negotiable")
-            }
-
-            childrenIsWorkObject.saveInBackground { e ->
-                if (e == null) toast("Post is saved!")
-                else toast(e.message.toString())
-                startActivity(Intent(this@ItemAddActivity, AnnouncementListsActivity::class.java))
-            }
-        }
-    }
-
-    private fun saveGiveForFree(user: User) {
-        binding.apply {
-            val giveForFreeObject = ParseObject("GiveForFree")
-            giveForFreeObject.put("category", category!!.categoryName)
-            giveForFreeObject.put("header", headerMain.text.toString())
-            giveForFreeObject.put("description", descMain.text.toString())
-            giveForFreeObject.put("region", region!!.title)
-            giveForFreeObject.put("city", city!!.title)
-            giveForFreeObject.put("userId", user.userId.toString())
-            giveForFreeObject.put("userName", user.username.toString())
-            if (negotiableExamination && myNumberExamination) {
-                if (headerMain.text!!.isNotEmpty() && descMain.text!!.isNotEmpty()) {
-                    giveForFreeObject.put("userPhone", phoneNumberEditText.text.toString())
-                    giveForFreeObject.put("price", price.text.toString())
-                    giveForFreeObject.put("currency", currency)
-                } else toast("Fill in all the fields!")
-            } else if (!negotiableExamination && myNumberExamination) {
-                if (descMain.text!!.isNotEmpty()) {
-                    giveForFreeObject.put("userPhone", phoneNumberEditText.text.toString())
-                    giveForFreeObject.put("price", "Negotiable")
-                    giveForFreeObject.put("currency", "Negotiable")
-                } else toast("Fill in all the fields!")
-            } else if (negotiableExamination && !myNumberExamination) {
-                if (headerMain.text!!.isNotEmpty()) {
-                    giveForFreeObject.put("userPhone", user.userPhone.toString())
-                    giveForFreeObject.put("price", price.text.toString())
-                    giveForFreeObject.put("currency", currency)
-                } else toast("Fill in all the fields!")
-            } else {
-                giveForFreeObject.put("userPhone", user.userPhone.toString())
-                giveForFreeObject.put("price", "Negotiable")
-                giveForFreeObject.put("currency", "Negotiable")
-            }
-
-            giveForFreeObject.saveInBackground { e ->
-                if (e == null) toast("Post is saved!")
-                else toast(e.message.toString())
-                startActivity(Intent(this@ItemAddActivity, AnnouncementListsActivity::class.java))
-            }
-        }
+    private fun openGallery() {
+        val intent = Intent()
+        intent.type = "image/*"
+        intent.action = Intent.ACTION_GET_CONTENT
+        startActivityForResult(intent, IMAGE_REQUEST)
     }
 
     private fun getAllCategory() {
@@ -688,85 +333,76 @@ class ItemAddActivity : AppCompatActivity(), CategoryItemOnClickListener,
         categoryList = categories!!
     }
 
-    private fun giveAdapters() {
-        binding.apply {
-            categorySpinner.adapter = addCategorySpinnerAdapter
+    private fun giveAdapters() = binding.apply {
 
-            carModelSpinner.adapter = addTransportModelSpinnerAdapter
+        categorySpinner.adapter = addCategorySpinnerAdapter
 
-            subcategorySpinner.adapter = SubCategorySpinnerAdapter(context = this@ItemAddActivity,
+        carModelSpinner.adapter = addTransportModelSpinnerAdapter
+
+        carTypeModelSpinner.adapter = carTypeModelSpinnerAdapter
+
+        yearSpinner.adapter = OtherSpinnerAdapter(context = this@ItemAddActivity,
+            item_other_spinner = R.layout.item_other_spinner,
+            array_name = R.array.model_acura_name,
+            names = yearTransportCategories, actionListener = this@ItemAddActivity)
+
+        fuelSpinner.adapter = OtherSpinnerAdapter(context = this@ItemAddActivity,
+            item_other_spinner = R.layout.item_other_spinner,
+            array_name = R.array.transport_fuel,
+            names = fuelTransportCategories, actionListener = this@ItemAddActivity)
+
+        bodyTypeSpinner.adapter = OtherSpinnerAdapter(context = this@ItemAddActivity,
+            item_other_spinner = R.layout.item_other_spinner,
+            array_name = R.array.transport_body_type,
+            names = bodyTypeTransportCategories, actionListener = this@ItemAddActivity)
+
+        driveUnitSpinner.adapter = OtherSpinnerAdapter(context = this@ItemAddActivity,
+            item_other_spinner = R.layout.item_other_spinner,
+            array_name = R.array.transport_drive_unit,
+            names = driveUnitTransportCategories, actionListener = this@ItemAddActivity)
+
+        carColorSpinner.adapter = OtherSpinnerAdapter(context = this@ItemAddActivity,
+            item_other_spinner = R.layout.item_other_spinner,
+            array_name = R.array.transport_color,
+            names = colorTransportCategories, actionListener = this@ItemAddActivity)
+
+        cppSpinner.adapter = OtherSpinnerAdapter(context = this@ItemAddActivity,
+            item_other_spinner = R.layout.item_other_spinner,
+            array_name = R.array.transport_cpp,
+            names = cppTransportCategories, actionListener = this@ItemAddActivity)
+
+        steeringWheelSpinner.adapter =
+            OtherSpinnerAdapter(context = this@ItemAddActivity,
                 item_other_spinner = R.layout.item_other_spinner,
-                array_name = R.array.sub_transport_category,
-                names = subCategories, actionListener = this@ItemAddActivity)
+                array_name = R.array.transport_steering_wheel,
+                names = steeringWheelTransportCategories, actionListener = this@ItemAddActivity)
 
-            carTypeModelSpinner.adapter = CarTypeModelSpinnerAdapter(context = this@ItemAddActivity,
+        conditionSpinner.adapter = OtherSpinnerAdapter(context = this@ItemAddActivity,
+            item_other_spinner = R.layout.item_other_spinner,
+            array_name = R.array.transport_condition,
+            names = conditionTransportCategories, actionListener = this@ItemAddActivity)
+
+        engineCapacitySpinner.adapter =
+            OtherSpinnerAdapter(context = this@ItemAddActivity,
                 item_other_spinner = R.layout.item_other_spinner,
-                array_name = R.array.model_acura_name,
-                names = typeModelTransportCategories, actionListener = this@ItemAddActivity)
+                array_name = R.array.transport_engine_capacity,
+                names = engineCapacityTransportCategories,
+                actionListener = this@ItemAddActivity)
 
-            yearSpinner.adapter = OtherSpinnerAdapter(context = this@ItemAddActivity,
-                item_other_spinner = R.layout.item_other_spinner,
-                array_name = R.array.model_acura_name,
-                names = yearTransportCategories, actionListener = this@ItemAddActivity)
+        currencySpinner.adapter = OtherSpinnerAdapter(context = this@ItemAddActivity,
+            item_other_spinner = R.layout.item_other_spinner,
+            array_name = R.array.volute,
+            names = currencies, actionListener = this@ItemAddActivity)
 
-            fuelSpinner.adapter = OtherSpinnerAdapter(context = this@ItemAddActivity,
-                item_other_spinner = R.layout.item_other_spinner,
-                array_name = R.array.transport_fuel,
-                names = fuelTransportCategories, actionListener = this@ItemAddActivity)
+        regionSpinner.adapter = RegionSpinnerAdapter(context = this@ItemAddActivity,
+            item_other_spinner = R.layout.item_other_spinner,
+            array_name = R.array.region,
+            names = regions, actionListener = this@ItemAddActivity)
 
-            bodyTypeSpinner.adapter = OtherSpinnerAdapter(context = this@ItemAddActivity,
-                item_other_spinner = R.layout.item_other_spinner,
-                array_name = R.array.transport_body_type,
-                names = bodyTypeTransportCategories, actionListener = this@ItemAddActivity)
-
-            driveUnitSpinner.adapter = OtherSpinnerAdapter(context = this@ItemAddActivity,
-                item_other_spinner = R.layout.item_other_spinner,
-                array_name = R.array.transport_drive_unit,
-                names = driveUnitTransportCategories, actionListener = this@ItemAddActivity)
-
-            carColorSpinner.adapter = OtherSpinnerAdapter(context = this@ItemAddActivity,
-                item_other_spinner = R.layout.item_other_spinner,
-                array_name = R.array.transport_color,
-                names = colorTransportCategories, actionListener = this@ItemAddActivity)
-
-            cppSpinner.adapter = OtherSpinnerAdapter(context = this@ItemAddActivity,
-                item_other_spinner = R.layout.item_other_spinner,
-                array_name = R.array.transport_cpp,
-                names = cppTransportCategories, actionListener = this@ItemAddActivity)
-
-            steeringWheelSpinner.adapter =
-                OtherSpinnerAdapter(context = this@ItemAddActivity,
-                    item_other_spinner = R.layout.item_other_spinner,
-                    array_name = R.array.transport_steering_wheel,
-                    names = steeringWheelTransportCategories, actionListener = this@ItemAddActivity)
-
-            conditionSpinner.adapter = OtherSpinnerAdapter(context = this@ItemAddActivity,
-                item_other_spinner = R.layout.item_other_spinner,
-                array_name = R.array.transport_condition,
-                names = conditionTransportCategories, actionListener = this@ItemAddActivity)
-
-            engineCapacitySpinner.adapter =
-                OtherSpinnerAdapter(context = this@ItemAddActivity,
-                    item_other_spinner = R.layout.item_other_spinner,
-                    array_name = R.array.transport_engine_capacity,
-                    names = engineCapacityTransportCategories,
-                    actionListener = this@ItemAddActivity)
-
-            currencySpinner.adapter = OtherSpinnerAdapter(context = this@ItemAddActivity,
-                item_other_spinner = R.layout.item_other_spinner,
-                array_name = R.array.volute,
-                names = currencies, actionListener = this@ItemAddActivity)
-
-            regionSpinner.adapter = RegionSpinnerAdapter(context = this@ItemAddActivity,
-                item_other_spinner = R.layout.item_other_spinner,
-                array_name = R.array.region,
-                names = regions, actionListener = this@ItemAddActivity)
-
-            citySpinner.adapter = CitySpinnerAdapter(context = this@ItemAddActivity,
-                item_other_spinner = R.layout.item_other_spinner,
-                array_name = R.array.cities_and_villages_chui,
-                names = cities, actionListener = this@ItemAddActivity)
-        }
+        citySpinner.adapter = CitySpinnerAdapter(context = this@ItemAddActivity,
+            item_other_spinner = R.layout.item_other_spinner,
+            array_name = R.array.cities_and_villages_chui,
+            names = cities, actionListener = this@ItemAddActivity)
     }
 
     private fun getAllList() {
@@ -1537,7 +1173,6 @@ class ItemAddActivity : AppCompatActivity(), CategoryItemOnClickListener,
     }
 
     override fun categoryOnClick(position: Int) {
-        val subCategoryList = arrayListOf<SubCategory>()
         binding.apply {
             categorySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
@@ -1554,17 +1189,18 @@ class ItemAddActivity : AppCompatActivity(), CategoryItemOnClickListener,
                 }
             }
 
+            subCategoryList.clear()
             subCategories.forEach {
                 if (it.id == categoryList[position].idCategory) {
                     subCategoryList.add(it)
                 }
-
-                subcategorySpinner.adapter = SubCategorySpinnerAdapter(
-                    context = this@ItemAddActivity, array_name = R.array.model_acura_name,
-                    item_other_spinner = R.layout.item_other_spinner,
-                    names = subCategoryList, actionListener = this@ItemAddActivity
-                )
             }
+
+            subcategorySpinner.adapter = SubCategorySpinnerAdapter(
+                context = this@ItemAddActivity, array_name = R.array.transport_model_name,
+                item_other_spinner = R.layout.item_other_spinner,
+                names = subCategoryList, actionListener = this@ItemAddActivity
+            )
         }
     }
 
@@ -1599,7 +1235,6 @@ class ItemAddActivity : AppCompatActivity(), CategoryItemOnClickListener,
 
     override fun otherSpinnerOnClick(position: Int) {
         binding.apply {
-
             yearSpinner.onItemSelectedListener =
                 object : AdapterView.OnItemSelectedListener {
                     override fun onItemSelected(
@@ -1803,7 +1438,7 @@ class ItemAddActivity : AppCompatActivity(), CategoryItemOnClickListener,
                     override fun onItemSelected(
                         parent: AdapterView<*>?, view: View?, position: Int, id: Long,
                     ) {
-                        subCategory = subCategories[position]
+                        subCategory = subCategoryList[position]
                         binding.transportConstraint.visibility =
                             if (position == 0 && category?.categoryName == "TRANSPORT") View.VISIBLE
                             else View.GONE
@@ -1813,6 +1448,20 @@ class ItemAddActivity : AppCompatActivity(), CategoryItemOnClickListener,
                         TODO("Not yet implemented")
                     }
                 }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.data != null) {
+            try {
+                imageUri = data.data
+                binding.photoRecycler.visibility = View.VISIBLE
+                bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, imageUri)
+                binding.photoRecycler.setImageBitmap(bitmap)
+            } catch (e: IOException) {
+                Log.i("error", "" + e.message)
+            }
         }
     }
 }

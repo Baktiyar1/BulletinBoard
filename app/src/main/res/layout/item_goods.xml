@@ -87,7 +87,7 @@
                 android:layout_marginStart="20dp"
                 android:padding="5dp"
                 android:textColor="#000"
-                android:text="phone"
+                android:text="@string/phone"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@+id/detailsGoodUserName"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -169,7 +169,7 @@
                 app:layout_constraintGuide_percent="0.40" />
 
             <TextView
-                android:id="@+id/carBrandText"
+                android:id="@+id/usernameTextProfile"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -189,10 +189,10 @@
                 android:textSize="17sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/guideline2"
-                app:layout_constraintTop_toTopOf="@+id/carBrandText" />
+                app:layout_constraintTop_toTopOf="@+id/usernameTextProfile" />
 
             <TextView
-                android:id="@+id/carYearText"
+                android:id="@+id/emailTextProfile"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -201,19 +201,19 @@
                 android:textSize="17sp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline2"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/carBrandText" />
+                app:layout_constraintTop_toBottomOf="@+id/usernameTextProfile" />
 
             <TextView
-                android:id="@+id/detailsCarYear"
+                android:id="@+id/detailsEmailProfile"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:paddingTop="5dp"
                 android:textSize="17sp"
-                app:layout_constraintBottom_toBottomOf="@+id/carYearText"
+                app:layout_constraintBottom_toBottomOf="@+id/emailTextProfile"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/guideline2"
-                app:layout_constraintTop_toTopOf="@+id/carYearText" />
+                app:layout_constraintTop_toTopOf="@+id/emailTextProfile" />
 
             <TextView
                 android:id="@+id/carFuelText"
@@ -225,10 +225,10 @@
                 android:textSize="17sp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline2"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/carYearText" />
+                app:layout_constraintTop_toBottomOf="@+id/emailTextProfile" />
 
             <TextView
-                android:id="@+id/detailsCarFuel"
+                android:id="@+id/detailsPhoneProfile"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
